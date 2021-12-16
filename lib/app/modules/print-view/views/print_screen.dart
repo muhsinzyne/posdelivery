@@ -1,3 +1,4 @@
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -59,16 +60,23 @@ class PrintScreen extends GetView<PrintScreenController> {
                             width: 30,
                           ),
                           Expanded(
-                            child: DropdownButton(
-                              //items: controller.getDeviceItems(),
-                              // selectedItemBuilder: (BuildContext context) {
-                              //   return controller.devices.map<Widget>((String item) {
-                              //     return Text(item);
-                              //   }).toList();
-                              // },
-                              //onChanged: (value) => setState(() => _device = value),
-                              onChanged: (value) {},
-                              value: controller.device,
+                            child: Container(
+                              child: DropdownButton<dynamic>(
+                                hint: Text('Select a vehicle '),
+                                value: controller.device,
+                                icon: const Icon(Icons.arrow_downward),
+                                iconSize: 24,
+                                elevation: 16,
+                                onChanged: (value) {
+                                  controller.device = value;
+                                },
+                                items: controller.allList.map<DropdownMenuItem<BluetoothDevice>>((value) {
+                                  return DropdownMenuItem<BluetoothDevice>(
+                                    value: value,
+                                    child: Text(value.name),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           ),
                         ],

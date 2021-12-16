@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:posdelivery/app/modules/print-view/test_print.dart';
+import 'package:posdelivery/app/test_print.dart';
 import 'package:posdelivery/app/ui/theme/app_colors.dart';
 
 class ThermalPrint extends StatefulWidget {

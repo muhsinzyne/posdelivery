@@ -21,8 +21,8 @@ class TestPrint {
         //bluetooth.printNewLine();
         bluetooth.printCustom("HEADER", 2, 1);
         bluetooth.printNewLine();
-        // bluetooth.printImage(pathImage); //path of your image/logo
-//         bluetooth.printNewLine();
+        bluetooth.printImage(pathImage); //path of your image/logo
+        bluetooth.printNewLine();
 // //      bluetooth.printImageBytes(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
 //         bluetooth.printLeftRight("LEFT", "RIGHT", 0);
 //         bluetooth.printLeftRight("LEFT", "RIGHT", 1);
