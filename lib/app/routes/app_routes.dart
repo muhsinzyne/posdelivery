@@ -13,6 +13,9 @@ abstract class Routes {
   static const licence = _Paths.licence;
   static const findCustomer = _Paths.findCustomer;
   static const printView = _Paths.printView;
+  static const salesList = _Paths.salesList;
+  static const posBill = _Paths.posBill;
+  static const addProduct = _Paths.addProduct;
 }
 
 abstract class _Paths {
@@ -25,4 +28,7 @@ abstract class _Paths {
   static const licence = '/licence';
   static const findCustomer = '/find-customer';
   static const printView = '/print-view';
+  static const salesList = '/sales-list';
+  static const posBill = '/pos-bill';
+  static const addProduct = '/add-product';
 }

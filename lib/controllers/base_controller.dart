@@ -5,6 +5,7 @@ import 'package:posdelivery/app/modules/contracts.dart';
 import 'package:posdelivery/app/routes/app_pages.dart';
 import 'package:posdelivery/controllers/app_controller.dart';
 import 'package:posdelivery/models/constants.dart';
+import 'package:posdelivery/models/currency_format.dart';
 import 'package:posdelivery/models/response/auth/employee_info.dart';
 import 'package:posdelivery/models/response/auth/my_info_response.dart';
 import 'package:posdelivery/providers/data/auth_data_provider.dart';
@@ -17,6 +18,7 @@ class BaseGetXController extends GetxController implements IBaseGetXController {
   AppController appController = Get.find<AppController>();
   AppService appService = Get.find<AppService>();
   AuthDataProvider authDataProvider = Get.find<AuthDataProvider>();
+  CurrencyFormat sr = CurrencyConst.srFormat1;
 
   RxBool isLoading = RxBool(false);
 

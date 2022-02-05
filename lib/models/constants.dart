@@ -1,4 +1,9 @@
+import 'package:posdelivery/models/currency_format.dart';
+
 class Constants {
+  static const taxInclusive = '0';
+  static const taxExclusive = '1';
+  static const no1 = '1';
   static const none = '';
   static const stringNull = 'null';
   static const ios = 'ios';
@@ -35,8 +40,15 @@ class Constants {
   static const appLogoPath = 'assets/images/fatoorah.png';
   static const logoHeroTag = 'logo-hero-tag';
   static const licenceCodeLength = 10;
+  static const stringExpressionStart = '[';
+  static const stringExpressionStop = ']';
 
   static const Duration smallDuration = Duration(milliseconds: 300);
   static const Duration oneSecDuration = Duration(seconds: 1);
   static const Duration fourSec = Duration(seconds: 4);
+}
+
+class CurrencyConst {
+  static CurrencyFormat srFormat1 = CurrencyFormat(format: "##,##,##0", symbol: 'SR', decimal: '0#');
+  static CurrencyFormat srFormat2 = CurrencyFormat(format: "##,##,##0", symbol: 'SR', decimal: '##');
 }

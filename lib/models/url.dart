@@ -6,4 +6,7 @@ class NetworkURL {
   static var base = api + '/api/';
   static var login = base + 'login';
   static var myInfo = base + 'users/my_info';
+  static var salesList = base + 'pos/sales_list';
+  static var allCustomerList = base + 'customers/customer_sujession';
+  static var productSuj = base + 'pos/product_sujession';
 }

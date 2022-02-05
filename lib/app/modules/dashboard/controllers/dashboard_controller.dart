@@ -9,6 +9,9 @@ class DashboardScreenController extends BaseGetXController implements IDashboard
   }
 
   actionGoReturns() {}
-  actionGoSalesHistory() {}
+  actionGoSalesHistory() {
+    Get.toNamed(Routes.salesList);
+  }
+
   actionGoPayments() {}
 }

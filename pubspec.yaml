@@ -34,7 +34,12 @@ dependencies:
   image_utils_class: ^2.0.0
   blue_thermal_printer: ^1.1.8
   path_provider: ^2.0.8
-  image_picker_saver:
+  #image_picker_saver: ^0.3.0
+  flutter_speed_dial: ^5.0.0+1
+  skeleton_text: ^3.0.0
+  audioplayers: ^0.20.1
+  qr_code_scanner: ^0.6.1
+
 
 
 
@@ -48,6 +53,7 @@ dependencies:
   dio: ^4.0.1
   connectivity: ^3.0.6
   logging: ^0.11.3
+
 
 
 

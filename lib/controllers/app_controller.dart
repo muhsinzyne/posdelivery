@@ -1,4 +1,6 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:get/get.dart';
 import 'package:posdelivery/app/config/flavor/flavor_service.dart';
 import 'package:posdelivery/app/routes/app_pages.dart';
@@ -11,7 +13,9 @@ class AppController extends GetxController {
   AppService appService;
 
   GlobalKey<ScaffoldState> appDrawerKey = GlobalKey<ScaffoldState>();
-  //AudioPlayer audioPlayer = AudioPlayer();
+  AudioPlayer audioPlayer = AudioPlayer();
+  AudioCache audioCache = AudioCache();
+
   @override
   void onInit() {
     appService = Get.find<AppService>();
@@ -66,11 +70,12 @@ class AppController extends GetxController {
   void playSound(PlaySound type) {
     switch (type) {
       case PlaySound.success:
-        print("hello");
-        //audioPlayer.play('assets/sounds/walmart_scanner.mp3', isLocal: true);
+        audioCache.play('sounds/walmart_scanner.mp3');
+        break;
+      case PlaySound.error:
+        FlutterBeep.beep(false);
         break;
       default:
-        //FlutterBeep.beep(FlutterBeep.ScreenLocked);
         break;
     }
   }

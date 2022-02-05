@@ -9,10 +9,16 @@ import 'package:posdelivery/app/modules/dashboard/bindings/dashboard_screen_bind
 import 'package:posdelivery/app/modules/dashboard/views/dashboard_screen.dart';
 import 'package:posdelivery/app/modules/my-account/bindings/my_account_binding.dart';
 import 'package:posdelivery/app/modules/my-account/views/my_account_view.dart';
+import 'package:posdelivery/app/modules/pos/add-product/bindings/add_product_binding.dart';
+import 'package:posdelivery/app/modules/pos/add-product/views/add_product_view.dart';
 import 'package:posdelivery/app/modules/pos/find-customer/bindings/find_customer_screen_binding.dart';
 import 'package:posdelivery/app/modules/pos/find-customer/views/find_customer_screen.dart';
-import 'package:posdelivery/app/modules/print-view/bindings/print_screen_binding.dart';
-import 'package:posdelivery/app/modules/print-view/views/print_screen.dart';
+import 'package:posdelivery/app/modules/pos/pos_bill/bindings/pos_bill_screen_binding.dart';
+import 'package:posdelivery/app/modules/pos/pos_bill/views/pos_bill_screen.dart';
+import 'package:posdelivery/app/modules/pos/print-view/bindings/print_screen_binding.dart';
+import 'package:posdelivery/app/modules/pos/print-view/views/print_screen.dart';
+import 'package:posdelivery/app/modules/pos/sales-list/bindings/sales_list_screen_binding.dart';
+import 'package:posdelivery/app/modules/pos/sales-list/views/sales_list_screen.dart';
 import 'package:posdelivery/app/modules/settings/change-language/bindings/change_language_binding.dart';
 import 'package:posdelivery/app/modules/settings/change-language/views/change_language_view.dart';
 import 'package:posdelivery/app/modules/splash/bindings/splash_screen_binding.dart';
@@ -70,6 +76,21 @@ class AppPages {
       name: _Paths.printView,
       page: () => PrintScreen(),
       binding: PrintScreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.salesList,
+      page: () => SalesListScreen(),
+      binding: SalesListScreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.posBill,
+      page: () => PosBillView(),
+      binding: PosBillScreenBinding(),
+    ),
+    GetPage(
+      name: _Paths.addProduct,
+      page: () => AddProductView(),
+      binding: AddProductBinding(),
     ),
   ];
 }

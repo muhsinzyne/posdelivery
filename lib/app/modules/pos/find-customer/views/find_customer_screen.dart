@@ -1,8 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_beep/flutter_beep.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:posdelivery/app/ui/components/buttons/bottom_sheet_btn.dart';
+import 'package:posdelivery/app/ui/components/buttons/bottom_sheet_btn_content.dart';
 import 'package:posdelivery/app/ui/theme/app_colors.dart';
 import 'package:posdelivery/controllers/app_controller.dart';
 import 'package:posdelivery/models/constants.dart';
@@ -11,12 +12,11 @@ import 'package:posdelivery/models/response/pos/warehouse.dart';
 import 'package:posdelivery/services/app_service.dart';
 
 import '../controllers/find_customer_controller.dart';
+import 'customer_scan.dart';
 
 class FindCustomerScreen extends GetView<FindCustomerScreenController> {
-  AppService appService = Get.find<AppService>();
-  AppController appController = Get.find<AppController>();
-  List<String> location = ['One', 'Two', 'Three', 'Four'];
-  String dropDownValue = '';
+  final AppService appService = Get.find<AppService>();
+  final AppController appController = Get.find<AppController>();
 
   List<DropdownMenuItem<String>> generateWareHouseItems() {
     final List<DropdownMenuItem<String>> wareHouseLists = [];
@@ -143,28 +143,23 @@ class FindCustomerScreen extends GetView<FindCustomerScreenController> {
               children: [
                 Expanded(
                   flex: 4,
-                  child: Container(
-                    child: DropdownSearch<String>(
-                      mode: Mode.DIALOG,
-                      showSelectedItems: false,
-                      items: [
-                        "Brazil",
-                        "Italia",
-                        "Tunisia",
-                        "Canada",
-                        "Italia",
-                        "Tunisia",
-                        "Canada",
-                        "Italia",
-                        "Tunisia",
-                        'Canada',
-                      ],
-                      label: "select_customer".tr,
-                      hint: "select_customer".tr,
-                      onChanged: print,
-                      selectedItem: "Brazil",
-                      showSearchBox: true,
-                    ),
+                  child: Obx(
+                    () {
+                      return Container(
+                        child: DropdownSearch<String>(
+                          mode: Mode.DIALOG,
+                          showSelectedItems: false,
+                          items: controller.customerListString,
+                          label: "select_customer".tr,
+                          hint: "select_customer".tr,
+                          onChanged: (value) {
+                            controller.changeCustomer(value);
+                          },
+                          selectedItem: controller.selectedCustomerName.value,
+                          showSearchBox: true,
+                        ),
+                      );
+                    },
                   ),
                 ),
                 Expanded(
@@ -175,9 +170,8 @@ class FindCustomerScreen extends GetView<FindCustomerScreenController> {
                       color: AppColors.primary,
                       child: InkWell(
                         onTap: () async {
-                          FlutterBeep.playSysSound(AndroidSoundIDs.TONE_DTMF_C);
-                          //appController.playSound(PlaySound.success);
-                          //Get.to(CustomerScanQr())?.then((value) => print(value));
+                          //appController.playSound(PlaySound.error);
+                          Get.to(CustomerScanQr())?.then((value) => controller.onScannedResult(value));
                         },
                         child: Container(
                           padding: EdgeInsets.all(10),
@@ -194,6 +188,15 @@ class FindCustomerScreen extends GetView<FindCustomerScreenController> {
             ),
           ],
         ),
+      ),
+      bottomSheet: BottomSheetBtnBlock(
+        children: [
+          CBottomSheetBtn(
+            color: AppColors.secondary,
+            label: 'continue'.tr,
+            onTap: controller.actionToPosPage,
+          )
+        ],
       ),
     );
   }
