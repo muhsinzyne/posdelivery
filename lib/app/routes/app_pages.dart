@@ -13,6 +13,8 @@ import 'package:posdelivery/app/modules/pos/add-product/bindings/add_product_bin
 import 'package:posdelivery/app/modules/pos/add-product/views/add_product_view.dart';
 import 'package:posdelivery/app/modules/pos/find-customer/bindings/find_customer_screen_binding.dart';
 import 'package:posdelivery/app/modules/pos/find-customer/views/find_customer_screen.dart';
+import 'package:posdelivery/app/modules/pos/pos-payment/bindings/pos_payment_binding.dart';
+import 'package:posdelivery/app/modules/pos/pos-payment/views/pos_payment_view.dart';
 import 'package:posdelivery/app/modules/pos/pos_bill/bindings/pos_bill_screen_binding.dart';
 import 'package:posdelivery/app/modules/pos/pos_bill/views/pos_bill_screen.dart';
 import 'package:posdelivery/app/modules/pos/print-view/bindings/print_screen_binding.dart';
@@ -91,6 +93,11 @@ class AppPages {
       name: _Paths.addProduct,
       page: () => AddProductView(),
       binding: AddProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.posPayment,
+      page: () => PosPaymentView(),
+      binding: PosPaymentBinding(),
     ),
   ];
 }

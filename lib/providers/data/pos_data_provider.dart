@@ -6,8 +6,10 @@ import 'package:posdelivery/app/modules/contracts.dart';
 import 'package:posdelivery/app/modules/pos/contract.dart';
 import 'package:posdelivery/models/requests/pos/customer_list.dart';
 import 'package:posdelivery/models/requests/pos/product_suggestion.dart';
+import 'package:posdelivery/models/requests/pos/sale_request.dart';
 import 'package:posdelivery/models/requests/pos/sales_list_request.dart';
 import 'package:posdelivery/models/response/error_message.dart';
+import 'package:posdelivery/models/response/pos/add_sale_response.dart';
 import 'package:posdelivery/models/response/pos/customer_list_response.dart';
 import 'package:posdelivery/models/response/pos/product_suggestion_response.dart';
 import 'package:posdelivery/models/response/pos/sales_list_response.dart';
@@ -22,6 +24,7 @@ class PosDataProvider extends BaseDataProvider {
   IBaseGetXController bCtrl;
   IFindCustomerScreenController iFindCCtrl;
   IProductSuggestionController pSujCtrl;
+  IPosPaymentController posPaymentCtrl;
 
   set callBack(IBaseGetXController controller) {
     bCtrl = controller;
@@ -37,6 +40,29 @@ class PosDataProvider extends BaseDataProvider {
 
   set salesListCallBack(ISalesListScreenController controller) {
     saleListCtrl = controller;
+  }
+
+  set posPaymentCallBack(IPosPaymentController controller) {
+    posPaymentCtrl = controller;
+  }
+
+  saleOrderRequest(SaleRequest saleRequest) {
+    final obs = network.post(NetworkURL.addSale, data: saleRequest.toJson()).asStream();
+    obs.listen((data) {
+      try {
+        AddSaleResponse addSaleResponse = AddSaleResponse.fromJSON(data.data);
+        posPaymentCtrl.onSaleDone(addSaleResponse);
+      } on Exception {
+        final ErrorMessage errMsg = ErrorMessage();
+        errMsg.message = 'invalid_response'.tr;
+        posPaymentCtrl.onSaleError(errMsg);
+      }
+    }, onError: (err) {
+      final ErrorMessage errMsg = ErrorMessage.fromJSON(jsonDecode(err.response.toString()));
+      if (err.response?.statusCode == StatusCodes.status400BadRequest) {
+        //saleListCtrl.onSalesListResponseBadRequest(errMsg);
+      }
+    });
   }
 
   getProductSuggestion(String term) {

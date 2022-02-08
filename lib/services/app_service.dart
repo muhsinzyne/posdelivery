@@ -3,16 +3,22 @@ import 'package:package_info/package_info.dart';
 import 'package:posdelivery/app/config/flavor/flavor_service.dart';
 import 'package:posdelivery/models/app_languages.dart';
 import 'package:posdelivery/models/constants.dart';
+import 'package:posdelivery/models/requests/pos/product_purchase_info.dart';
 import 'package:posdelivery/models/response/auth/employee_info.dart';
 import 'package:posdelivery/models/response/auth/my_info_response.dart';
 import 'package:posdelivery/services/base/get_x_service.dart';
 import 'package:posdelivery/services/storage/local_storage_service.dart';
 
 class AppService extends BaseGetXService {
+  final RxString _cCustomer = RxString('');
+  final RxString _cBiller = RxString('');
+  final RxString _cWareHouse = RxString('');
   PackageInfo packageInfo;
   EmployeeInfo employeeInfo;
   MyInfoResponse myInfoResponse = MyInfoResponse();
   LocalStorage localStorage = Get.find<LocalStorage>();
+  RxList<ProductPurchaseInfo> productPurchaseList = RxList([]);
+  final RxDouble _grandTotal = RxDouble(0);
 
   // ///for bluetooth printer
   // BluetoothDevice device;
@@ -37,6 +43,7 @@ class AppService extends BaseGetXService {
     super.onInit();
     //ever(_authToken, (_) => print(_authToken.value));
     ever(_appServer, (_) => print(_appServer.value));
+    ever(productPurchaseList, (_) => _calculateOrderTotal());
     //ever(_isLastLoggedIn, (_) => print("is logged in updated -  ${_isLastLoggedIn.value}"));
     // ever(_printerConn, (_) {
     //   print("printer connection changed RxBool");
@@ -56,6 +63,13 @@ class AppService extends BaseGetXService {
   }
 
   // bool get printerConn => _printerConn.value;
+  String get grandTotalAmount {
+    return _grandTotal.value.toStringAsFixed(2);
+  }
+
+  String get cCustomer => _cCustomer.value;
+  String get cBiller => _cBiller.value;
+  String get cWareHouse => _cWareHouse.value;
   String get authToken => _authToken.value;
   bool get isLastLoggedIn => _isLastLoggedIn.value;
   String get qrCodeResult => _qrCodeResult.value;
@@ -67,6 +81,10 @@ class AppService extends BaseGetXService {
   // set printerConn(bool value) {
   //   _printerConn.value = value;
   // }
+
+  set grandTotal(double value) {
+    _grandTotal.value = value;
+  }
 
   set qrCodeResult(String value) {
     _qrCodeResult.value = value;
@@ -86,6 +104,21 @@ class AppService extends BaseGetXService {
   set appServer(String value) {
     _appServer.value = value;
     localStorage.setString(Constants.appServer, value);
+  }
+
+  set cCustomer(String value) {
+    _cCustomer.value = value;
+    localStorage.setString(Constants.cCustomer, value);
+  }
+
+  set cBiller(String value) {
+    _cBiller.value = value;
+    localStorage.setString(Constants.cBiller, value);
+  }
+
+  set cWareHouse(String value) {
+    _cWareHouse.value = value;
+    localStorage.setString(Constants.cWareHouse, value);
   }
 
   set appPrefix(String value) {
@@ -125,5 +158,13 @@ class AppService extends BaseGetXService {
     authToken = tempToken.toString();
     appServer = tempAppServer.toString();
     appPrefix = tempAppPrefix.toString();
+  }
+
+  _calculateOrderTotal() {
+    print("ever triggered");
+    _grandTotal.value = 0;
+    for (var element in productPurchaseList) {
+      _grandTotal.value += element.totalAmount;
+    }
   }
 }

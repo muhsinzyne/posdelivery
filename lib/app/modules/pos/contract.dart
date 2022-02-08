@@ -1,4 +1,5 @@
 import 'package:posdelivery/models/response/error_message.dart';
+import 'package:posdelivery/models/response/pos/add_sale_response.dart';
 import 'package:posdelivery/models/response/pos/customer_list_response.dart';
 import 'package:posdelivery/models/response/pos/product_suggestion_response.dart';
 import 'package:posdelivery/models/response/pos/sales_list_response.dart';
@@ -20,4 +21,9 @@ abstract class IAddProductController {}
 abstract class IProductSuggestionController {
   onSuggestionDone(ProductSuggestionResponse pResponse);
   onSuggestionError(ErrorMessage err);
+}
+
+abstract class IPosPaymentController {
+  onSaleDone(AddSaleResponse addSaleResponse);
+  onSaleError(ErrorMessage err);
 }

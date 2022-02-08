@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -23,7 +24,7 @@ class PrintScreen extends GetView<PrintScreenController> {
         () => RefreshIndicator(
           onRefresh: () => controller.printProvider.refreshBluetoothScan(),
           child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
+            //physics: ClampingScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
               child: Column(
@@ -44,6 +45,7 @@ class PrintScreen extends GetView<PrintScreenController> {
                     ],
                   ),
                   ListView(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: <Widget>[
                       Row(
@@ -84,14 +86,296 @@ class PrintScreen extends GetView<PrintScreenController> {
                           ),
                         ],
                       ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          children: [
+                            Image.network(
+                              'https://demo.pos.slasah.com/assets/uploads/demo/logos/New_Project.png',
+                              width: 200,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              'DEMO BILLER',
+                              style: TextStyle(fontSize: 22),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            AutoSizeText(
+                              'demo address demo city 001 demo state 01',
+                              maxLines: 2,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            AutoSizeText(
+                              'Tel: 00550055',
+                              maxLines: 2,
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            AutoSizeText(
+                              'VAT Number: 000',
+                              maxLines: 2,
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            AutoSizeText(
+                              'Tax Invoice'.toUpperCase(),
+                              maxLines: 2,
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Date: 07/02/2022 19:43',
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'sl no: SALE48',
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Sale No/Ref: SALE00000048',
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Sales Associate: MUHAMMED MUHSIN',
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Customer: Walk In-customer',
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text('ITEMS'),
+                            Divider(),
+                            ItemsListTile(
+                              number: '#',
+                              itemName: 'item_name'.tr,
+                              qty: 'qty'.tr,
+                              unitPrice: 'upc'.tr,
+                              taxAmount: 'tax_amt'.tr,
+                              subTotal: 'sub_total'.tr,
+                            ),
+                            ItemsListTile(
+                              number: '1',
+                              itemName: 'Demo Priduct',
+                              qty: '3',
+                              unitPrice: '20.0',
+                              taxAmount: '3.0',
+                              subTotal: '23',
+                            ),
+                            ItemsListTile(
+                              number: '2',
+                              itemName: 'Demo dfsffhfh',
+                              qty: '3',
+                              unitPrice: '20.0',
+                              taxAmount: '3.0',
+                              subTotal: '23',
+                            ),
+                            ItemsListTile(
+                              number: '2',
+                              itemName: 'Demo dfsffhfh',
+                              qty: '3',
+                              unitPrice: '20.0',
+                              taxAmount: '3.0',
+                              subTotal: '23',
+                            ),
+                            ItemsListTile(
+                              number: '2',
+                              itemName: 'Demo dfsffhfh',
+                              qty: '3',
+                              unitPrice: '20.0',
+                              taxAmount: '3.0',
+                              subTotal: '23',
+                            ),
+                            ItemsListTile(
+                              number: '2',
+                              itemName: 'Demo dfsffhfh',
+                              qty: '3',
+                              unitPrice: '20.0',
+                              taxAmount: '3.0',
+                              subTotal: '23',
+                            ),
+                            ItemsListTile(
+                              number: '2',
+                              itemName: 'Demo dfsffhfh',
+                              qty: '3',
+                              unitPrice: '20.0',
+                              taxAmount: '3.0',
+                              subTotal: '23',
+                            ),
+                            ItemsListTile(
+                              number: '2',
+                              itemName: 'Demo dfsffhfh',
+                              qty: '3',
+                              unitPrice: '20.0',
+                              taxAmount: '3.0',
+                              subTotal: '23',
+                            ),
+                            ItemsListTile(
+                              number: '2',
+                              itemName: 'Demo dfsffhfh',
+                              qty: '3',
+                              unitPrice: '20.0',
+                              taxAmount: '3.0',
+                              subTotal: '23',
+                            ),
+                            ItemsListTile(
+                              number: '2',
+                              itemName: 'Demo dfsffhfh',
+                              qty: '3',
+                              unitPrice: '20.0',
+                              taxAmount: '3.0',
+                              subTotal: '23',
+                            ),
+                            Divider(),
+                            ItemSummaryTile(
+                              label: 'total'.tr,
+                              value: '100.5',
+                            ),
+                            ItemSummaryTile(
+                              label: 'grand_total'.tr,
+                              value: '100.5',
+                            ),
+                            ItemSummaryTile(
+                              label: 'paid'.tr,
+                              value: '100.5',
+                            ),
+                            ItemSummaryTile(
+                              label: 'balance'.tr,
+                              value: '100.5',
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Paid by: Cash'),
+                                Text('Amount: 100.0'),
+                                Text('Change: 0.0'),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'tax_summary'.tr,
+                                  style: TextStyle(fontSize: 20),
+                                )
+                              ],
+                            ),
+                            Table(
+                              border: TableBorder.all(),
+                              children: [
+                                TableRow(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'name'.tr,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'qty'.tr,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'tax_excl'.tr,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'tax_amount'.tr,
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                TableRow(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text('vat @ 15'),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text('4'),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text('7.50'),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text('10.20'),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 100),
+                          ],
+                        ),
+                      ),
                       // Container(
+                      //   //color: Colors.red,
                       //   child: ListView.builder(
+                      //     physics: ClampingScrollPhysics(),
                       //     shrinkWrap: true,
                       //     itemCount: 100,
                       //     itemBuilder: (BuildContext context, int i) {
                       //       return ListTile(
                       //         leading: Icon(Icons.info),
-                      //         title: Text('SMA100 - date'),
+                      //         title: Text('SMA100 - date $i'),
                       //       );
                       //     },
                       //   ),
@@ -174,6 +458,138 @@ class PrintScreen extends GetView<PrintScreenController> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ItemSummaryTile extends StatelessWidget {
+  final String label;
+  final String value;
+  const ItemSummaryTile({
+    Key key,
+    this.label = '',
+    this.value = '',
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                child: Text(
+                  value,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Divider(),
+      ],
+    );
+  }
+}
+
+class ItemsListTile extends StatelessWidget {
+  final String number;
+  final String itemName;
+  final String qty;
+  final String unitPrice;
+  final String taxAmount;
+  final String subTotal;
+  const ItemsListTile({
+    Key key,
+    this.number = '',
+    this.itemName = '',
+    this.qty = '',
+    this.unitPrice = '',
+    this.taxAmount = '',
+    this.subTotal = '',
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Container(
+                child: Text(number),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Container(
+                child: AutoSizeText(
+                  itemName,
+                  maxLines: 3,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                child: AutoSizeText(
+                  qty,
+                  maxLines: 3,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: AutoSizeText(
+                  unitPrice,
+                  maxLines: 3,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: AutoSizeText(
+                  taxAmount,
+                  maxLines: 3,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: AutoSizeText(
+                  subTotal,
+                  maxLines: 3,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Divider(),
+      ],
     );
   }
 }

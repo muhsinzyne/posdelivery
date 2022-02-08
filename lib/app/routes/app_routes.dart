@@ -16,6 +16,7 @@ abstract class Routes {
   static const salesList = _Paths.salesList;
   static const posBill = _Paths.posBill;
   static const addProduct = _Paths.addProduct;
+  static const posPayment = _Paths.posPayment;
 }
 
 abstract class _Paths {
@@ -31,4 +32,5 @@ abstract class _Paths {
   static const salesList = '/sales-list';
   static const posBill = '/pos-bill';
   static const addProduct = '/add-product';
+  static const posPayment = '/pos-payment';
 }

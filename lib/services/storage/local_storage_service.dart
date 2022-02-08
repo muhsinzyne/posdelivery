@@ -64,6 +64,8 @@ class LocalStorage extends GetxService {
     }
   }
 
+  dynamic setData(String key) {}
+
   bool get isLastLoggedIn {
     bool value = prefs?.getBool(Constants.isLastLoggedIn);
     return value ?? false;

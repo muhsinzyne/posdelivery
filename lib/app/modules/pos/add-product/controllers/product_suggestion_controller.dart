@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:posdelivery/app/modules/pos/contract.dart';
-import 'package:posdelivery/app/routes/app_pages.dart';
 import 'package:posdelivery/controllers/base_controller.dart';
 import 'package:posdelivery/models/response/error_message.dart';
 import 'package:posdelivery/models/response/pos/product.dart';
@@ -28,8 +27,9 @@ class ProductSuggestionController extends BaseGetXController implements IProduct
     productList.value = pResponse.products;
   }
 
-  actionSelectProduct(Product product) {
-    Get.toNamed(Routes.addProduct, arguments: product);
+  actionSelectProduct(Product product) async {
+    //UINotification.showLoading();
+    //await Future.delayed(Constants.oneSecDuration);
   }
 
   @override

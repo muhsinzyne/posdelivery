@@ -44,6 +44,8 @@ class FindCustomerScreenController extends BaseGetXController implements IFindCu
     posDataProvider.findCustomerCallBack = this;
     _cWareHouseName.value = appService.myInfoResponse.cWareHouse?.name ?? '';
     _cBillerName.value = appService.myInfoResponse.cBiller?.name ?? '';
+    appService.cWareHouse = appService.myInfoResponse.cWareHouse?.id;
+    appService.cBiller = appService.myInfoResponse.cBiller?.id;
     super.onInit();
   }
 
@@ -64,6 +66,7 @@ class FindCustomerScreenController extends BaseGetXController implements IFindCu
 
   void changeCustomer(String value) {
     cCustomer.value = StringHelper.splitFromBracket(value);
+    appService.cCustomer = cCustomer.value;
   }
 
   void actionToPosPage() {
@@ -90,6 +93,7 @@ class FindCustomerScreenController extends BaseGetXController implements IFindCu
 
   void changeBiller(String value) {
     final Billers searchB = appService.myInfoResponse.billers?.firstWhere((element) => element.id == value);
+    appService.cBiller = searchB.id;
     if (searchB != null) {
       appService.myInfoResponse.billerId = searchB.id;
       _cBillerName.value = searchB.name ?? '';
@@ -98,6 +102,7 @@ class FindCustomerScreenController extends BaseGetXController implements IFindCu
 
   void changeWarehouse(String value) {
     final Warehouses searchW = appService.myInfoResponse.warehouses?.firstWhere((element) => element.id == value);
+    appService.cWareHouse = searchW.id;
     if (searchW != null) {
       appService.myInfoResponse.warehouseId = searchW.id;
       _cWareHouseName.value = searchW.name ?? '';

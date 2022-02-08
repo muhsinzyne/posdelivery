@@ -16,13 +16,13 @@ class Product {
   Product({this.id, this.itemId, this.label, this.category, this.row, this.comboItems, this.taxRate, this.units, this.options});
 
   Product.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'].toString();
     itemId = json['item_id'];
     label = json['label'];
     category = json['category'];
     row = json['row'] != null ? Row.fromJson(json['row']) : null;
     comboItems = json['combo_items'];
-    //taxRate = json['tax_rate'] != null ? TaxRate.fromJson(json['tax_rate']) : null;
+    taxRate = json['tax_rate'] != false ? TaxRate.fromJson(json['tax_rate'] as Map<String, dynamic>) : null;
     if (json['units'] != null) {
       units = <Units>[];
       json['units'].forEach((v) {

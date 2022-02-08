@@ -1,6 +1,8 @@
 import 'package:posdelivery/models/currency_format.dart';
 
 class Constants {
+  static const taxTypePercentage = '1';
+  static const taxTypeFlat = '2';
   static const taxInclusive = '0';
   static const taxExclusive = '1';
   static const no1 = '1';
@@ -12,6 +14,9 @@ class Constants {
   static const windows = 'windows';
   static const linux = 'linux';
   static const isLastLoggedIn = 'is_last_logged_in';
+  static const cCustomer = 'current_customer';
+  static const cBiller = 'current_biller';
+  static const cWareHouse = 'current_warehouse';
   static const authToken = 'auth_token';
   static const appServer = 'app_server';
   static const appPrefix = 'app_prefix';
@@ -24,8 +29,8 @@ class Constants {
   static const defaultAppVersionD = '0.0.1';
   static const defaultAppBuildNo = '1';
   static const version = 'Version';
-  static const apiConnectionTimeOut = 9000;
-  static const apiReceiveTimeOut = 9000;
+  static const apiConnectionTimeOut = 12000;
+  static const apiReceiveTimeOut = 12000;
   static const authorization = 'Authorization';
   static const bearer = 'Bearer';
   static const commonSafeAreaTop = 120;
