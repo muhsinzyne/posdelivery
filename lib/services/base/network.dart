@@ -24,7 +24,11 @@ class DioNetwork extends BaseGetXService {
     dio.interceptors.add(
       DioLoadHeaders(),
     );
-    dio.interceptors.add(OnErrorHandler());
+    dio.interceptors.add(
+      OnErrorHandler(
+        dio: dio,
+      ),
+    );
     dio.interceptors.add(
       OnConnectionChangeRetry(
         dio: dio,
