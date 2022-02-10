@@ -8,10 +8,11 @@ import 'package:posdelivery/app/ui/components/ui_notification.dart';
 import 'package:posdelivery/models/app_languages.dart';
 import 'package:posdelivery/models/constants.dart';
 import 'package:posdelivery/services/app_service.dart';
+import 'package:uuid/uuid.dart';
 
 class AppController extends GetxController {
   AppService appService;
-
+  Uuid uuid = Uuid();
   GlobalKey<ScaffoldState> appDrawerKey = GlobalKey<ScaffoldState>();
   AudioPlayer audioPlayer = AudioPlayer();
   AudioCache audioCache = AudioCache();

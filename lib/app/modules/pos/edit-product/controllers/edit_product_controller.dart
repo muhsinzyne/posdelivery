@@ -1,8 +1,7 @@
-import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:posdelivery/app/modules/pos/add-product/views/product_search.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:posdelivery/app/modules/pos/contract.dart';
 import 'package:posdelivery/app/ui/components/ui_notification.dart';
 import 'package:posdelivery/controllers/base_controller.dart';
@@ -11,7 +10,7 @@ import 'package:posdelivery/models/requests/pos/product_purchase_info.dart';
 import 'package:posdelivery/models/response/pos/product.dart';
 import 'package:posdelivery/models/response/pos/units.dart';
 
-class AddProductController extends BaseGetXController implements IAddProductController {
+class EditProductController extends BaseGetXController implements IEditProductController {
   bool dummyFalse = false;
   final productName = TextEditingController();
   final productQty = TextEditingController();
@@ -34,7 +33,8 @@ class AddProductController extends BaseGetXController implements IAddProductCont
   @override
   void onInit() {
     super.onInit();
-    product = Get.arguments;
+    pInfo.value = Get.arguments;
+    product = pInfo.value.rowProduct;
     _autoFillForm();
   }
 
@@ -43,38 +43,38 @@ class AddProductController extends BaseGetXController implements IAddProductCont
     super.onReady();
   }
 
+  actionOnRemoveItemList() async {
+    await Future.delayed(Duration(milliseconds: 200));
+    appService.productPurchaseList.removeWhere((element) => element.uniqueId == pInfo.value.uniqueId);
+    UINotification.showNotification(
+      title: 'item_has_been_removed'.tr,
+      color: Colors.red,
+    );
+    Get.back();
+  }
+
   actionOnChangeUnit(String unit) {
     cUnit = product.units.firstWhere((element) => element.id == unit);
     cUnitName.value = cUnit.name;
     pInfo.value.cUnit = cUnit;
-    //Units baseUnit = product.units.firstWhere((element) => element.id == cUnit.baseUnit);
-    //print(baseUnit.toJson());
-    //print(cUnit.toJson());
+
     reCalculate();
   }
 
   actionOnChangeQty() {
     if (productQty.text != Constants.none) {
       var updateQty = int.tryParse(productQty.text);
-      print(updateQty);
       pInfo.value.itemQty = updateQty;
       reCalculate();
     }
   }
 
-  actionAddAndNew(BuildContext context) {
+  actionUpdate(BuildContext context) {
     if (qtyAvailable) {
-      appService.productPurchaseList.insert(0, pInfo.value);
-      Get.back();
-      showSearch(context: context, delegate: ProductSearch());
-    } else {
-      _triggerOutOfStock();
-    }
-  }
-
-  actionAdd(BuildContext context) {
-    if (qtyAvailable) {
-      appService.productPurchaseList.insert(0, pInfo.value);
+      //ProductPurchaseInfo item = appService.productPurchaseList.firstWhere((element) => element.uniqueId == pInfo.value.uniqueId);
+      var index = appService.productPurchaseList.indexWhere((element) => element.uniqueId == pInfo.value.uniqueId);
+      appService.productPurchaseList[index] = pInfo.value;
+      //item = pInfo.value;
       Get.back();
     } else {
       _triggerOutOfStock();
@@ -105,38 +105,15 @@ class AddProductController extends BaseGetXController implements IAddProductCont
 
   _autoFillForm() {
     productName.text = product.row.name;
-    productQty.text = Constants.no1;
+    productQty.text = pInfo.value.itemQty.toString();
     units.value = product.units;
-    cUnit = product.units.first;
-    rate.text = product.row.price.toDouble().toStringAsFixed(2);
+    cUnit = pInfo.value.cUnit;
     cUnitName.value = cUnit.name;
-    pInfo.value.cUnit = cUnit;
+    rate.text = product.row.price.toDouble().toStringAsFixed(2);
     _calculations();
   }
 
   _calculations() {
-    pInfo.value.uniqueId = appController.uuid.v4();
-    pInfo.value.rowProduct = product;
-    pInfo.value.itemId = product.itemId;
-    pInfo.value.productId = product.row.id;
-    pInfo.value.itemType = product.row.type;
-    pInfo.value.comboItems = product.comboItems;
-    pInfo.value.itemPrice = product.row.price;
-    pInfo.value.itemQty = product.row.qty;
-    pInfo.value.itemAQty = product.row.quantity;
-    var data = jsonEncode(product.row.toJson());
-    print(data);
-    pInfo.value.itemTaxMethod = product.row.itemTaxMethod;
-    pInfo.value.itemDs = double.tryParse(product.row.discount);
-    pInfo.value.itemDiscount = 0.0;
-    pInfo.value.itemCode = product.row.code;
-    pInfo.value.itemSerial = product.row.serial;
-    pInfo.value.itemName = product.row.name;
-    //pInfo.productUnit = product.row.unit as Units;
-    pInfo.value.baseQuantity = product.row.baseQuantity.toString();
-    pInfo.value.unitPrice = product.row.realUnitPrice;
-    pInfo.value.unitPrice = (pInfo.value.unitPrice - pInfo.value.itemDiscount);
-    pInfo.value.avlQty = product.row.quantity;
     reCalculate();
   }
 
@@ -156,7 +133,6 @@ class AddProductController extends BaseGetXController implements IAddProductCont
           taxVal = ((unitPrice * tax) / (100 + tax));
           taxRate = tax.toStringAsFixed(2) + '%';
         } else {
-          print("tax exclusive");
           taxVal = ((unitPrice * tax) / 100);
           taxRate = tax.toStringAsFixed(2) + '%';
         }
@@ -171,7 +147,6 @@ class AddProductController extends BaseGetXController implements IAddProductCont
       pInfo.value.productTax += (taxVal * (pInfo.value.itemQty * pInfo.value.unitMulti));
     }
     if (pInfo.value.itemTaxMethod == Constants.taxInclusive) {
-      print("/n /n /n here its coming");
       pInfo.value.itemPrice = (pInfo.value.unitPrice - taxVal);
     } else {
       pInfo.value.itemPrice = pInfo.value.unitPrice;
@@ -181,12 +156,11 @@ class AddProductController extends BaseGetXController implements IAddProductCont
     pInfo.value.taxRate = taxRate;
 
     pInfo.value.unitPrice = pInfo.value.unitPrice + pInfo.value.itemDiscount;
-
     if (product.row.itemTaxMethod == Constants.taxInclusive) {
       pInfo.value.subTotal = (pInfo.value.unitPrice * (pInfo.value.itemQty * pInfo.value.unitMulti));
       pInfo.value.totalAmount = pInfo.value.subTotal;
     } else {
-      pInfo.value.subTotal = ((pInfo.value.unitPrice * (pInfo.value.itemQty * pInfo.value.unitMulti)));
+      pInfo.value.subTotal = ((pInfo.value.unitPrice * (pInfo.value.itemQty * pInfo.value.unitMulti)) - pInfo.value.productTax);
       pInfo.value.totalAmount = pInfo.value.subTotal + pInfo.value.productTax;
     }
 
@@ -199,6 +173,5 @@ class AddProductController extends BaseGetXController implements IAddProductCont
     infoTaxVal.value = pInfo.value.taxVal.toStringAsFixed(2);
     infoTaxRate.value = pInfo.value.taxRate;
     totalTax.value = pInfo.value.totalTax.toStringAsFixed(2);
-    print(pInfo.value.cUnit.toJson());
   }
 }

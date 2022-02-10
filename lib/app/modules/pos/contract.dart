@@ -18,6 +18,8 @@ abstract class ISalesListScreenController {
 
 abstract class IAddProductController {}
 
+abstract class IEditProductController {}
+
 abstract class IProductSuggestionController {
   onSuggestionDone(ProductSuggestionResponse pResponse);
   onSuggestionError(ErrorMessage err);

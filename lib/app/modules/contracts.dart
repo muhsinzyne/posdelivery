@@ -9,6 +9,5 @@ abstract class IBaseGetXController {
   void validateLicence();
   void onInvalidLicence();
   void onValidLicence();
-
   void onTokenValid(MyInfoResponse myInfo);
 }

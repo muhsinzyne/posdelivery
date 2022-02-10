@@ -1,6 +1,8 @@
+import 'package:posdelivery/models/response/pos/product.dart';
 import 'package:posdelivery/models/response/pos/units.dart';
 
 class ProductPurchaseInfo {
+  String uniqueId;
   String itemId;
   String productId;
   String itemType;
@@ -26,9 +28,11 @@ class ProductPurchaseInfo {
   Units cUnit;
   num avlQty;
   num unitMulti = 1;
+  Product rowProduct;
   ProductPurchaseInfo();
 
   Map<String, dynamic> toJson() => <String, dynamic>{
+        'unique_id': uniqueId,
         'itemId': itemId,
         'productId': productId,
         'itemPrice': itemPrice,
@@ -39,6 +43,6 @@ class ProductPurchaseInfo {
         'taxVal': taxVal,
         'taxRate': taxRate,
         'quantity': avlQty,
-        'cUnit': cUnit.toJson(),
+        //'cUnit': cUnit.toJson(),
       };
 }

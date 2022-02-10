@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -95,7 +97,12 @@ class PosPaymentController extends BaseGetXController implements IPosPaymentCont
       saleRequest.productComment.add('');
       saleRequest.serial.add('');
       saleRequest.productDiscount.add('0');
-      saleRequest.productTax.add(element.itemTaxMethod);
+      if (element.rowProduct.taxRate != null) {
+        saleRequest.productTax.add(Constants.isTaxProduct);
+      } else {
+        saleRequest.productTax.add(Constants.nonTaxProduct);
+      }
+      saleRequest.productTax.add('1');
       // change to net price
       saleRequest.netPrice.add(element.unitPrice.toStringAsFixed(2));
       saleRequest.unitPrice.add(element.unitPrice.toStringAsFixed(2));
@@ -122,6 +129,7 @@ class PosPaymentController extends BaseGetXController implements IPosPaymentCont
     saleRequest.shipping = '0';
     saleRequest.rPaidBy = 'cash';
     saleRequest.totalItems = appService.productPurchaseList.length.toString();
+    var data = jsonEncode(saleRequest.toJson());
     posDataProvider.saleOrderRequest(saleRequest);
   }
 

@@ -11,6 +11,8 @@ import 'package:posdelivery/app/modules/my-account/bindings/my_account_binding.d
 import 'package:posdelivery/app/modules/my-account/views/my_account_view.dart';
 import 'package:posdelivery/app/modules/pos/add-product/bindings/add_product_binding.dart';
 import 'package:posdelivery/app/modules/pos/add-product/views/add_product_view.dart';
+import 'package:posdelivery/app/modules/pos/edit-product/bindings/edit_product_binding.dart';
+import 'package:posdelivery/app/modules/pos/edit-product/views/edit_product_view.dart';
 import 'package:posdelivery/app/modules/pos/find-customer/bindings/find_customer_screen_binding.dart';
 import 'package:posdelivery/app/modules/pos/find-customer/views/find_customer_screen.dart';
 import 'package:posdelivery/app/modules/pos/pos-payment/bindings/pos_payment_binding.dart';
@@ -98,6 +100,11 @@ class AppPages {
       name: _Paths.posPayment,
       page: () => PosPaymentView(),
       binding: PosPaymentBinding(),
+    ),
+    GetPage(
+      name: _Paths.editProduct,
+      page: () => EditProductView(),
+      binding: EditProductBinding(),
     ),
   ];
 }

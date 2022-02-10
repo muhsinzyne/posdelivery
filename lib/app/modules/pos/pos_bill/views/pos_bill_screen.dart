@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:posdelivery/app/ui/components/buttons/bottom_sheet_btn.dart';
 import 'package:posdelivery/app/ui/components/buttons/bottom_sheet_btn_content.dart';
@@ -109,48 +110,72 @@ class PosBillView extends GetView<PosBillScreenController> {
                       itemCount: controller.appService.productPurchaseList.length,
                       itemBuilder: (BuildContext context, int i) {
                         ProductPurchaseInfo cInfo = controller.appService.productPurchaseList[i];
-                        return Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Divider(),
-                              ProductTileItem(
-                                label: cInfo.itemName,
-                                value: cInfo.totalAmount.toStringAsFixed(2),
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              ProductTileItem(
-                                label: 'net_unit_price'.tr,
-                                value: cInfo.unitPrice.toStringAsFixed(2),
-                                fontSize: 14,
-                              ),
-                              ProductTileItem(
-                                label: 'quantity'.tr,
-                                value: cInfo.itemQty.toString(),
-                                fontSize: 14,
-                              ),
-                              ProductTileItem(
-                                label: 'total_tax'.tr,
-                                value: cInfo.totalTax.toStringAsFixed(2),
-                                fontSize: 14,
-                              ),
-                              ProductTileItem(
-                                label: 'sub_total'.tr,
-                                value: cInfo.subTotal.toStringAsFixed(2),
-                                fontSize: 16,
-                              ),
-                              ProductTileItem(
-                                label: 'grand_total'.tr,
-                                value: cInfo.totalAmount.toStringAsFixed(2),
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                valueFontSize: 20,
-                              ),
-                              Divider(),
-                            ],
+                        return Slidable(
+                          actionExtentRatio: .3,
+                          secondaryActions: [
+                            IconSlideAction(
+                              caption: 'edit'.tr,
+                              color: Colors.blue,
+                              icon: Icons.edit,
+                              onTap: () {
+                                controller.actionOnEditRequest(cInfo);
+                              },
+                              closeOnTap: true,
+                            ),
+                            IconSlideAction(
+                              caption: 'delete'.tr,
+                              color: Colors.red,
+                              icon: Icons.delete,
+                              onTap: () {
+                                controller.actionOnRemoveItemList(cInfo);
+                              },
+                              closeOnTap: true,
+                            ),
+                          ],
+                          actionPane: SlidableDrawerActionPane(),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Divider(),
+                                ProductTileItem(
+                                  label: cInfo.itemName,
+                                  value: cInfo.totalAmount.toStringAsFixed(2),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                ProductTileItem(
+                                  label: 'net_unit_price'.tr,
+                                  value: cInfo.unitPrice.toStringAsFixed(2),
+                                  fontSize: 14,
+                                ),
+                                ProductTileItem(
+                                  label: 'quantity'.tr,
+                                  value: cInfo.itemQty.toString(),
+                                  fontSize: 14,
+                                ),
+                                ProductTileItem(
+                                  label: 'total_tax'.tr,
+                                  value: cInfo.totalTax.toStringAsFixed(2),
+                                  fontSize: 14,
+                                ),
+                                ProductTileItem(
+                                  label: 'sub_total'.tr,
+                                  value: cInfo.subTotal.toStringAsFixed(2),
+                                  fontSize: 16,
+                                ),
+                                ProductTileItem(
+                                  label: 'grand_total'.tr,
+                                  value: cInfo.totalAmount.toStringAsFixed(2),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  valueFontSize: 20,
+                                ),
+                                Divider(),
+                              ],
+                            ),
                           ),
                         );
                       });
