@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:posdelivery/app/routes/app_pages.dart';
 import 'package:posdelivery/app/ui/components/ui_notification.dart';
 import 'package:posdelivery/controllers/base_controller.dart';
+import 'package:posdelivery/models/navigation/print_view_nav.dart';
 import 'package:posdelivery/models/requests/pos/sales_list_request.dart';
 import 'package:posdelivery/models/response/error_message.dart';
 import 'package:posdelivery/models/response/pos/sales_list.dart';
@@ -29,6 +31,12 @@ class SalesListScreenController extends BaseGetXController implements ISalesList
       }
     });
     super.onInit();
+  }
+
+  actionOnInvoiceView(SalesInfoShort salesInfoShort) {
+    PrintViewNavParams params = PrintViewNavParams();
+    params.refId = salesInfoShort.id;
+    Get.toNamed(Routes.printView, arguments: params);
   }
 
   @override

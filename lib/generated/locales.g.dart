@@ -52,6 +52,9 @@ class LocaleKeys {
   static const app_my_service = 'app_my_service';
   static const change_language = 'change_language';
   static const app_logout = 'app_logout';
+  static const please_wait = 'please_wait';
+  static const tel = 'tel';
+  static const date = 'date';
 }
 
 class Locales {
@@ -100,5 +103,8 @@ class Locales {
     'app_my_service': 'My Service',
     'change_language': 'Change Language',
     'app_logout': 'Log Out',
+    'please_wait': 'Please Wait..',
+    'tel': 'Tel: ',
+    'date': 'Date: ',
   };
 }

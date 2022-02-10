@@ -4,6 +4,7 @@ import 'package:posdelivery/models/response/pos/product_row.dart';
 import 'package:posdelivery/models/response/pos/return_payments.dart';
 import 'package:posdelivery/models/response/pos/return_rows.dart';
 import 'package:posdelivery/models/response/pos/return_sale.dart';
+import 'package:posdelivery/models/response/pos/sale_payments.dart';
 import 'package:posdelivery/models/response/pos/sales_biller.dart';
 import 'package:posdelivery/models/response/pos/sales_created_by.dart';
 import 'package:posdelivery/models/response/pos/sales_customer.dart';
@@ -28,7 +29,7 @@ class InvoiceResponse {
   List<Rows> rows;
   SalesBiller biller;
   SalesCustomer customer;
-  bool payments;
+  List<Payments> payments;
   SalePos pos;
   String barcode;
   ReturnSale returnSale;
@@ -42,7 +43,9 @@ class InvoiceResponse {
   bool printer;
   String pageTitle;
   String qrcodeImage;
-
+  String userDirectory;
+  String domain;
+  InvoiceResponse();
   InvoiceResponse.fromJson(Map<String, dynamic> json) {
     assets = json['assets'];
     settings = json['Settings'] != null ? Settings.fromJson(json['Settings']) : null;
@@ -69,7 +72,12 @@ class InvoiceResponse {
     } else {
       customer = null;
     }
-    payments = json['payments'];
+    if (json['payments'] != null) {
+      payments = <Payments>[];
+      json['payments'].forEach((v) {
+        payments.add(Payments.fromJson(v));
+      });
+    }
     pos = json['pos'] != null ? SalePos.fromJson(json['pos']) : null;
     barcode = json['barcode'];
     returnSale = json['return_sale'] != null ? ReturnSale.fromJson(json['return_sale']) : null;
@@ -92,6 +100,8 @@ class InvoiceResponse {
     printer = json['printer'];
     pageTitle = json['page_title'];
     qrcodeImage = json['qrcodeImage'];
+    userDirectory = json['user_directory'];
+    domain = json['domain'];
   }
 
   Map<String, dynamic> toJson() {
@@ -124,12 +134,16 @@ class InvoiceResponse {
     if (customer != null) {
       data['customer'] = customer.toJson();
     }
-    data['payments'] = payments;
+    if (payments != null) {
+      data['payments'] = payments.map((v) => v.toJson()).toList();
+    }
     if (pos != null) {
       data['pos'] = pos.toJson();
     }
     data['barcode'] = barcode;
-    data['return_sale'] = returnSale.toJson();
+    if (returnSale != null) {
+      data['return_sale'] = returnSale.toJson();
+    }
     data['return_rows'] = returnRows;
     if (returnPayments != null) {
       data['return_payments'] = returnPayments.map((v) => v.toJson()).toList();
@@ -149,6 +163,8 @@ class InvoiceResponse {
     data['printer'] = printer;
     data['page_title'] = pageTitle;
     data['qrcodeImage'] = qrcodeImage;
+    data['user_directory'] = userDirectory;
+    data['domain'] = domain;
     return data;
   }
 }

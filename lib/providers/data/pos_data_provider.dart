@@ -4,13 +4,16 @@ import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:posdelivery/app/modules/contracts.dart';
 import 'package:posdelivery/app/modules/pos/contract.dart';
+import 'package:posdelivery/app/modules/pos/print-view/contracts.dart';
 import 'package:posdelivery/models/requests/pos/customer_list.dart';
 import 'package:posdelivery/models/requests/pos/product_suggestion.dart';
 import 'package:posdelivery/models/requests/pos/sale_request.dart';
+import 'package:posdelivery/models/requests/pos/sale_view_request.dart';
 import 'package:posdelivery/models/requests/pos/sales_list_request.dart';
 import 'package:posdelivery/models/response/error_message.dart';
 import 'package:posdelivery/models/response/pos/add_sale_response.dart';
 import 'package:posdelivery/models/response/pos/customer_list_response.dart';
+import 'package:posdelivery/models/response/pos/invoice_response.dart';
 import 'package:posdelivery/models/response/pos/product_suggestion_response.dart';
 import 'package:posdelivery/models/response/pos/sales_list_response.dart';
 import 'package:posdelivery/models/status_codes.dart';
@@ -25,9 +28,14 @@ class PosDataProvider extends BaseDataProvider {
   IFindCustomerScreenController iFindCCtrl;
   IProductSuggestionController pSujCtrl;
   IPosPaymentController posPaymentCtrl;
+  IPrintScreenController printCtrl;
 
   set callBack(IBaseGetXController controller) {
     bCtrl = controller;
+  }
+
+  set printCtrlCallBack(IPrintScreenController controller) {
+    printCtrl = controller;
   }
 
   set pSujCallBack(IProductSuggestionController controller) {
@@ -44,6 +52,25 @@ class PosDataProvider extends BaseDataProvider {
 
   set posPaymentCallBack(IPosPaymentController controller) {
     posPaymentCtrl = controller;
+  }
+
+  getSaleInvoice(SaleViewRequest saleViewRequest) {
+    final obs = network.get(NetworkURL.saleView, queryParameters: saleViewRequest.toJson()).asStream();
+    obs.listen((data) {
+      try {
+        InvoiceResponse invoiceResponse = InvoiceResponse.fromJson(data.data);
+        printCtrl.onSaleViewFetchDone(invoiceResponse);
+      } on Exception {
+        final ErrorMessage errMsg = ErrorMessage();
+        errMsg.message = 'invalid_response'.tr;
+        printCtrl.onSaleViewError(errMsg);
+      }
+    }, onError: (err) {
+      final ErrorMessage errMsg = ErrorMessage.fromJSON(jsonDecode(err.response.toString()));
+      if (err.response?.statusCode == StatusCodes.status400BadRequest) {
+        //saleListCtrl.onSalesListResponseBadRequest(errMsg);
+      }
+    });
   }
 
   saleOrderRequest(SaleRequest saleRequest) {

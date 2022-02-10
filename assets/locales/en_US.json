@@ -39,6 +39,8 @@
   "app_my_service": "My Service",
   "change_language": "Change Language",
   "app_logout": "Log Out",
-  "please_wait": "Please Wait.."
+  "please_wait": "Please Wait..",
+  "tel": "Tel: ",
+  "date": "Date"
 
 }

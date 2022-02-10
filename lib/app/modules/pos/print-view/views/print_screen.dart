@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:posdelivery/app/modules/pos/print-view/controllers/print_screen_controller.dart';
 import 'package:posdelivery/app/test_print.dart';
 import 'package:posdelivery/app/ui/components/buttons/bottom_sheet_btn.dart';
+import 'package:posdelivery/app/ui/components/loading/cached_image_network.dart';
 import 'package:posdelivery/app/ui/theme/app_colors.dart';
 import 'package:posdelivery/app/ui/theme/styles.dart';
 import 'package:posdelivery/models/constants.dart';
@@ -90,40 +91,57 @@ class PrintScreen extends GetView<PrintScreenController> {
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Column(
                           children: [
-                            Image.network(
-                              'https://demo.pos.slasah.com/assets/uploads/demo/logos/New_Project.png',
-                              width: 200,
+                            Obx(
+                              () {
+                                return CCachedNetworkImage(
+                                  imageUrl: (controller.invoiceResponse.value?.domain ?? '') +
+                                      '/assets/uploads/' +
+                                      (controller.invoiceResponse.value.userDirectory ?? '') +
+                                      '/logos/' +
+                                      (controller.invoiceResponse.value.biller?.logo ?? ''),
+                                  fit: BoxFit.contain,
+                                  width: 300,
+                                );
+                              },
                             ),
                             SizedBox(
                               height: 20,
                             ),
-                            Text(
-                              'DEMO BILLER',
-                              style: TextStyle(fontSize: 22),
+                            Obx(() {
+                              return Text(
+                                controller.invoiceResponse.value.biller?.name ?? '',
+                                style: TextStyle(fontSize: 22),
+                              );
+                            }),
+                            SizedBox(
+                              height: 10,
                             ),
+                            Obx(() {
+                              return AutoSizeText(
+                                controller.invoiceResponse.value.biller?.address ?? '',
+                                maxLines: 2,
+                                style: TextStyle(fontSize: 16),
+                              );
+                            }),
+                            Obx(() {
+                              return AutoSizeText(
+                                'tel'.tr + (controller.invoiceResponse.value.biller?.phone ?? ''),
+                                maxLines: 2,
+                                style: TextStyle(fontSize: 18),
+                              );
+                            }),
+                            Obx(() {
+                              return AutoSizeText(
+                                'vat'.tr + (controller.invoiceResponse.value.biller?.vatNo ?? ''),
+                                maxLines: 2,
+                                style: TextStyle(fontSize: 18),
+                              );
+                            }),
                             SizedBox(
                               height: 10,
                             ),
                             AutoSizeText(
-                              'demo address demo city 001 demo state 01',
-                              maxLines: 2,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            AutoSizeText(
-                              'Tel: 00550055',
-                              maxLines: 2,
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            AutoSizeText(
-                              'VAT Number: 000',
-                              maxLines: 2,
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            AutoSizeText(
-                              'Tax Invoice'.toUpperCase(),
+                              'tax_invoice'.tr.toUpperCase(),
                               maxLines: 2,
                               style: TextStyle(
                                 fontSize: 24,
@@ -135,34 +153,34 @@ class PrintScreen extends GetView<PrintScreenController> {
                             ),
                             Row(
                               children: [
+                                Obx(() {
+                                  return Text(
+                                    'date'.tr + ': ' + (controller.invoiceResponse.value.inv?.date ?? ''),
+                                    textAlign: TextAlign.start,
+                                  );
+                                }),
+                              ],
+                            ),
+                            Row(
+                              children: [
                                 Text(
-                                  'Date: 07/02/2022 19:43',
+                                  'sl_no'.tr + ': ' + (controller.invoiceResponse.value.inv?.referenceNo ?? ''),
                                   textAlign: TextAlign.start,
                                 ),
                               ],
                             ),
                             Row(
                               children: [
-                                Text(
-                                  'sl no: SALE48',
-                                  textAlign: TextAlign.start,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'Sale No/Ref: SALE00000048',
-                                  textAlign: TextAlign.start,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'Sales Associate: MUHAMMED MUHSIN',
-                                  textAlign: TextAlign.start,
-                                ),
+                                Obx(() {
+                                  return Text(
+                                    'sales_associate'.tr +
+                                        ': ' +
+                                        ((controller.invoiceResponse.value.createdBy?.firstName ?? '') +
+                                            ' ' +
+                                            (controller.invoiceResponse.value.createdBy?.lastName ?? '')),
+                                    textAlign: TextAlign.start,
+                                  );
+                                }),
                               ],
                             ),
                             SizedBox(
@@ -170,16 +188,18 @@ class PrintScreen extends GetView<PrintScreenController> {
                             ),
                             Row(
                               children: [
-                                Text(
-                                  'Customer: Walk In-customer',
-                                  textAlign: TextAlign.start,
-                                ),
+                                Obx(() {
+                                  return Text(
+                                    'customer'.tr + ': ' + (controller.invoiceResponse.value.customer.name ?? ''),
+                                    textAlign: TextAlign.start,
+                                  );
+                                }),
                               ],
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            Text('ITEMS'),
+                            Text('items'.tr.toUpperCase()),
                             Divider(),
                             ItemsListTile(
                               number: '#',
@@ -465,6 +485,7 @@ class PrintScreen extends GetView<PrintScreenController> {
 class ItemSummaryTile extends StatelessWidget {
   final String label;
   final String value;
+
   const ItemSummaryTile({
     Key key,
     this.label = '',
@@ -515,6 +536,7 @@ class ItemsListTile extends StatelessWidget {
   final String unitPrice;
   final String taxAmount;
   final String subTotal;
+
   const ItemsListTile({
     Key key,
     this.number = '',
