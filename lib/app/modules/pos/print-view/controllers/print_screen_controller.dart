@@ -48,4 +48,10 @@ class PrintScreenController extends BaseGetXController implements IPrintScreenCo
     invoiceResponse.value = dataResponse;
     print(invoiceResponse.toJson());
   }
+
+  @override
+  actionOnPrint() {
+    printProvider.testPrintItem();
+    print("print data");
+  }
 }

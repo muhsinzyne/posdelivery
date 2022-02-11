@@ -5,7 +5,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:posdelivery/app/modules/pos/print-view/controllers/print_screen_controller.dart';
-import 'package:posdelivery/app/test_print.dart';
 import 'package:posdelivery/app/ui/components/buttons/bottom_sheet_btn.dart';
 import 'package:posdelivery/app/ui/components/loading/cached_image_network.dart';
 import 'package:posdelivery/app/ui/theme/app_colors.dart';
@@ -15,6 +14,7 @@ import 'package:posdelivery/models/response/static/tax_summary.dart';
 
 import '../../../../../models/response/pos/product_row.dart';
 import '../../../../../models/response/pos/return_rows.dart';
+import '../../../../ui/components/static/item_summary_title.dart';
 
 class PrintScreen extends GetView<PrintScreenController> {
   List<TableRow> _generateTableItemList() {
@@ -412,20 +412,6 @@ class PrintScreen extends GetView<PrintScreenController> {
                           ],
                         ),
                       ),
-                      // Container(
-                      //   //color: Colors.red,
-                      //   child: ListView.builder(
-                      //     physics: ClampingScrollPhysics(),
-                      //     shrinkWrap: true,
-                      //     itemCount: 100,
-                      //     itemBuilder: (BuildContext context, int i) {
-                      //       return ListTile(
-                      //         leading: Icon(Icons.info),
-                      //         title: Text('SMA100 - date $i'),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
                     ],
                   ),
                 ],
@@ -489,8 +475,7 @@ class PrintScreen extends GetView<PrintScreenController> {
               icon: Icons.print,
               label: 'print'.tr,
               onTap: () {
-                TestPrint test = new TestPrint();
-                test.sample('');
+                controller.actionOnPrint();
               },
             ),
             CBottomSheetBtn(
@@ -504,140 +489,6 @@ class PrintScreen extends GetView<PrintScreenController> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ItemSummaryTile extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const ItemSummaryTile({
-    Key key,
-    this.label = '',
-    this.value = '',
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                child: Text(
-                  value,
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        Divider(),
-      ],
-    );
-  }
-}
-
-class ItemsListTile extends StatelessWidget {
-  final String number;
-  final String itemName;
-  final String qty;
-  final String unitPrice;
-  final String taxAmount;
-  final String subTotal;
-
-  const ItemsListTile({
-    Key key,
-    this.number = '',
-    this.itemName = '',
-    this.qty = '',
-    this.unitPrice = '',
-    this.taxAmount = '',
-    this.subTotal = '',
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: Text(number),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                child: AutoSizeText(
-                  itemName,
-                  maxLines: 3,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: AutoSizeText(
-                  qty,
-                  maxLines: 3,
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: AutoSizeText(
-                  unitPrice,
-                  maxLines: 3,
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: AutoSizeText(
-                  taxAmount,
-                  maxLines: 3,
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: AutoSizeText(
-                  subTotal,
-                  maxLines: 3,
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            ),
-          ],
-        ),
-        Divider(),
-      ],
     );
   }
 }

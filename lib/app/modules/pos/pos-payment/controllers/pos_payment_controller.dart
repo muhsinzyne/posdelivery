@@ -9,6 +9,7 @@ import 'package:posdelivery/app/ui/components/ui_notification.dart';
 import 'package:posdelivery/app/ui/theme/app_colors.dart';
 import 'package:posdelivery/controllers/base_controller.dart';
 import 'package:posdelivery/models/constants.dart';
+import 'package:posdelivery/models/navigation/print_view_nav.dart';
 import 'package:posdelivery/models/requests/pos/sale_request.dart';
 import 'package:posdelivery/models/response/error_message.dart';
 import 'package:posdelivery/models/response/pos/add_sale_response.dart';
@@ -170,7 +171,9 @@ class PosPaymentController extends BaseGetXController implements IPosPaymentCont
       title: 'sales_completed'.tr,
       color: AppColors.greenIconColor,
     );
-    Get.offAndToNamed(Routes.printView);
+    PrintViewNavParams printViewNavParams = PrintViewNavParams();
+    printViewNavParams.refId = addSaleResponse?.data?.saleId.toString() ?? '0';
+    Get.offAndToNamed(Routes.printView, arguments: printViewNavParams);
   }
 
   @override
