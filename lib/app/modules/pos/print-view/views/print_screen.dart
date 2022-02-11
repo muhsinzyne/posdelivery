@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 import 'package:flutter/material.dart';
@@ -408,6 +410,8 @@ class PrintScreen extends GetView<PrintScreenController> {
                               border: TableBorder.all(),
                               children: _generateTableItemList(),
                             ),
+
+                            Image.memory(base64Decode(controller.invoiceResponse.value.qrCodeImageWithOutMeta)),
                             SizedBox(height: 100),
                           ],
                         ),

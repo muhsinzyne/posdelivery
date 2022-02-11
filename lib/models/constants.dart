@@ -51,6 +51,8 @@ class Constants {
   static const licenceCodeLength = 10;
   static const stringExpressionStart = '[';
   static const stringExpressionStop = ']';
+  static const uploadsPath = '/assets/uploads/';
+  static const logosPath = '/logos/';
 
   static const Duration smallDuration = Duration(milliseconds: 300);
   static const Duration oneSecDuration = Duration(seconds: 1);

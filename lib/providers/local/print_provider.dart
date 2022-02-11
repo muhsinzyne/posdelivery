@@ -8,7 +8,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:posdelivery/app/modules/contracts.dart';
 import 'package:posdelivery/app/modules/pos/print-view/contracts.dart';
 import 'package:posdelivery/app/test_print.dart';
+import 'package:posdelivery/models/constants.dart';
+import 'package:posdelivery/models/response/pos/invoice_response.dart';
 import 'package:posdelivery/providers/local/base_print_provider.dart';
+
+import '../../models/response/pos/product_row.dart';
+import '../../models/response/static/tax_summary.dart';
 
 class PrintProvider extends BasePrintProvider {
   BlueThermalPrinter bluetooth = BlueThermalPrinter.instance;
@@ -52,7 +57,7 @@ class PrintProvider extends BasePrintProvider {
 
   @override
   void onInit() {
-    loadImage();
+    //loadImage();
     super.onInit();
   }
 
@@ -128,13 +133,10 @@ class PrintProvider extends BasePrintProvider {
     File file = File('$dir/$filename');
 
     if (file.existsSync()) {
-      print('file already exist');
       var image = await file.readAsBytes();
-
       logoImage = '$dir/$filename';
       return image;
     } else {
-      print('file not found downloading from server');
       var request = await http.get(
         Uri.parse(url),
       );
@@ -145,48 +147,104 @@ class PrintProvider extends BasePrintProvider {
     }
   }
 
-  void loadImage() {
-    var url = 'https://demo.pos.slasah.com/assets/uploads/demo/logos/New_Project.png';
+  void loadImage(String url) async {
+    print(url);
     var filename = Uri.parse(url).pathSegments.last;
-    downloadImage(filename, url).then((bytes) {
-      print(logoImage);
+    await downloadImage(filename, url).then((bytes) {
+      return true;
     });
   }
 
-  void testPrintItem() {
+  void printPosInvoice(InvoiceResponse invoiceResponse) {
+    String telTitle = 'tel'.tr;
+    String vatTitle = 'vat'.tr;
+    String invoiceTitle =
+        invoiceResponse.inv.saleStatus == SalesStatus.returned ? 'return_invoice'.tr.toUpperCase() : 'simple_tax_invoice'.tr.toUpperCase();
+
+    String dateTitle = 'date'.tr.toUpperCase();
+    String saleRefNo = 'sales_ref_no'.tr;
+    String salesAssociate = 'sales_associate'.tr;
+    String customer = 'customer'.tr;
+    String itemsString = 'items'.tr.toUpperCase();
     bluetooth.isConnected.then((isConnected) {
       bluetooth.printImage(logoImage);
       bluetooth.printNewLine();
-      bluetooth.printCustom("DEMO BILLER", 1, 1);
-      // bluetooth.printCustom("demo address demo city 001 demo state 01", 0, 1);
-      // bluetooth.printCustom("Tel: 00550055", 0, 1);
-      // bluetooth.printCustom("VAT NO: 300926682900003", 1, 1);
-      // bluetooth.printCustom("SIMPLIFIED TAX INVOICE", 1, 1);
-      // bluetooth.printNewLine();
-      // bluetooth.printCustom("Date: 15/12/2021 23:43", 0, 0);
-      // bluetooth.printCustom("Sale No/Ref: SALE00000014", 0, 0);
-      // bluetooth.printCustom("Sales Associate: MUHAMMED MUHSIN", 0, 0);
-      // bluetooth.printCustom("Customer: Walk In-customer", 0, 0);
-      // bluetooth.printNewLine();
-      // bluetooth.printCustom("ITEMS", 1, 1);
-      // bluetooth.printCustom("----------------------------------", 0, 1);
-      // bluetooth.printLeftRight("#1: SHIRT", "*vat-15", 0);
-      // bluetooth.printCustom("US POLO ASSN", 0, 0);
-      // bluetooth.printLeftRight("1.00 x SR 75.90 - Tax (vat-15) SR 9.90", "SR 75.90", 0);
-      // bluetooth.printCustom("----------------------------------", 0, 1);
-      // bluetooth.printLeftRight("Total", "SR 75.90", 1);
-      // bluetooth.printLeftRight("Grand Total", "SR 75.90", 1);
-      // bluetooth.printCustom("----------------------------------", 0, 1);
-      // bluetooth.print3Column("Paid by: Cash", "Amount: SR 75.90", "Change: 0", 1);
-      // bluetooth.printNewLine();
-      // bluetooth.printCustom("Tax Summary", 1, 0);
-      // bluetooth.print4Column("Name", "Qty", "Tax Ex", "Tax Amt", 0);
-      // bluetooth.print4Column("V-15", "1.00", "SR 66.00", "SR 9.90", 0);
-      // bluetooth.print3Column("", "Total Tax", "SR 9.90", 1);
-      // bluetooth.printNewLine();
-      // bluetooth.printQRcode("Insert Your Own Text to Generate", 200, 200, 1);
-      // bluetooth.printCustom("Thank you", 0, 1);
-      // bluetooth.paperCut();
+      bluetooth.printCustom(invoiceResponse.biller.name, 1, 1);
+      bluetooth.printCustom(invoiceResponse.biller.address, 0, 1);
+      bluetooth.printCustom(telTitle + ": " + invoiceResponse.biller.phone, 0, 1);
+      bluetooth.printCustom(vatTitle + ": " + invoiceResponse.biller.vatNo, 1, 1);
+      bluetooth.printCustom(invoiceTitle, 1, 1);
+      bluetooth.printNewLine();
+      bluetooth.printCustom(dateTitle + " : " + invoiceResponse.inv.date, 0, 0);
+      bluetooth.printCustom(saleRefNo + " : " + invoiceResponse.inv.referenceNo, 0, 0);
+      bluetooth.printCustom(salesAssociate + " : " + invoiceResponse.createdBy.firstName + ' ' + invoiceResponse.createdBy.lastName, 0, 0);
+      bluetooth.printCustom(customer + " : " + invoiceResponse.customer.name, 0, 0);
+      bluetooth.printNewLine();
+      bluetooth.printCustom(itemsString, 1, 1);
+      bluetooth.printCustom("-------------------------------------", 0, 1);
+      List<TaxSummaryList> taxSummaryList = [];
+      for (int i = 0; i < invoiceResponse.rows.length; i++) {
+        Rows cRows = invoiceResponse.rows[i];
+        if (cRows.taxName != Constants.none || cRows.taxCode != null) {
+          var taxIndex = taxSummaryList.indexWhere((tax) => tax.id == cRows.taxRateId);
+          if (taxIndex == Constants.unDefinedIndex) {
+            TaxSummaryList newTaxList = TaxSummaryList();
+            newTaxList.id = cRows.taxRateId;
+            newTaxList.name = cRows.taxName;
+            newTaxList.qty = double.tryParse(cRows.quantity);
+            newTaxList.taxEx = double.tryParse(cRows.netUnitPrice);
+            newTaxList.taxAmt = double.tryParse(cRows.itemTax);
+            taxSummaryList.add(newTaxList);
+          } else {
+            TaxSummaryList newTaxList = taxSummaryList[taxIndex];
+            newTaxList.qty = newTaxList.qty + double.tryParse(cRows.quantity);
+            newTaxList.taxEx = newTaxList.taxEx + double.tryParse(cRows.netUnitPrice);
+            newTaxList.taxAmt = newTaxList.taxAmt + double.tryParse(cRows.itemTax);
+            taxSummaryList[taxIndex] = newTaxList;
+          }
+        }
+
+        var currentNo = (i + 1).toString();
+        bluetooth.printLeftRight("#" + currentNo + ": " + cRows.productName, cRows.taxCode, 0);
+        bluetooth.printLeftRight(
+          double.tryParse(cRows.quantity).toStringAsFixed(1) +
+              " x " +
+              double.tryParse(cRows.realUnitPrice).toStringAsFixed(2) +
+              "- " +
+              'tax'.tr +
+              "(" +
+              (cRows.taxName ?? '') +
+              ") - " +
+              double.tryParse(cRows.itemTax).toStringAsFixed(2) +
+              "",
+          double.tryParse(cRows.subtotal).toStringAsFixed(2),
+          0,
+        );
+      }
+      bluetooth.printCustom("----------------------------------", 0, 1);
+      bluetooth.printLeftRight('sub_total'.tr + ": ", invoiceResponse.total.toStringAsFixed(2), 1);
+      bluetooth.printLeftRight('tax'.tr + ": ", invoiceResponse.totalTax.toStringAsFixed(2), 1);
+      bluetooth.printLeftRight('grand_total'.tr + ": ", invoiceResponse.grandTotal.toStringAsFixed(2), 1);
+      bluetooth.printCustom("----------------------------------", 0, 1);
+      for (var payment in invoiceResponse.payments) {
+        var paidAmount = double.tryParse(payment.posPaid) == 0.0 ? double.tryParse(payment.amount) : double.tryParse(payment.posPaid);
+        var returnedString = payment.returnId != null ? " (" + 'returned'.tr + ") " : " ";
+        var paidString = paidAmount.toStringAsFixed(2) + returnedString;
+        var change = double.tryParse(payment.posBalance) > 0 ? double.tryParse(payment.posBalance) : 0.0;
+        bluetooth.print3Column(
+            'paid_by'.tr + ": " + payment.paidBy, 'amount'.tr + ": " + paidString, 'change'.tr + ": " + change.toStringAsFixed(1), 1);
+      }
+      bluetooth.printNewLine();
+
+      bluetooth.printCustom('tax_summary'.tr.toUpperCase(), 1, 0);
+      bluetooth.print4Column('name'.tr, 'qty'.tr, 'tax_ex'.tr, 'tax_amt'.tr, 0);
+      for (var tax in taxSummaryList) {
+        bluetooth.print4Column(tax.name, tax.qty.toStringAsFixed(1), tax.taxEx.toStringAsFixed(2), tax.taxAmt.toStringAsFixed(2), 0);
+      }
+
+      bluetooth.printQRcode(invoiceResponse.qrCodeString, 200, 200, 1);
+      bluetooth.printCustom('tank_you'.tr, 0, 1);
+      bluetooth.paperCut();
     });
   }
 }

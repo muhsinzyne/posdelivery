@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:posdelivery/app/modules/pos/print-view/contracts.dart';
 import 'package:posdelivery/app/ui/components/ui_notification.dart';
 import 'package:posdelivery/controllers/base_controller.dart';
+import 'package:posdelivery/models/constants.dart';
 import 'package:posdelivery/models/navigation/print_view_nav.dart';
 import 'package:posdelivery/models/requests/pos/sale_view_request.dart';
 import 'package:posdelivery/models/response/error_message.dart';
@@ -50,8 +51,11 @@ class PrintScreenController extends BaseGetXController implements IPrintScreenCo
   }
 
   @override
-  actionOnPrint() {
-    printProvider.testPrintItem();
-    print("print data");
+  actionOnPrint() async {
+    UINotification.showLoading();
+    printProvider.loadImage(invoiceResponse.value.logoPath);
+    await Future.delayed(Constants.smallDuration);
+    printProvider.printPosInvoice(invoiceResponse.value);
+    UINotification.hideLoading();
   }
 }

@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:posdelivery/models/constants.dart';
 import 'package:posdelivery/models/response/pos/date_formats.dart';
 import 'package:posdelivery/models/response/pos/default_currency.dart';
 import 'package:posdelivery/models/response/pos/product_row.dart';
@@ -47,6 +52,10 @@ class InvoiceResponse {
   String domain;
   InvoiceResponse();
 
+  String get logoPath {
+    return domain + Constants.uploadsPath + userDirectory + Constants.logosPath + biller.logo;
+  }
+
   double get totalTax {
     return double.tryParse(inv?.totalTax ?? '0.0');
   }
@@ -61,6 +70,54 @@ class InvoiceResponse {
 
   double get total {
     return (double.tryParse(inv?.total ?? '0.0'));
+  }
+
+  String get qrCodeString {
+    BytesBuilder bytesBuilder = BytesBuilder();
+
+    /// 1 seller Name
+    bytesBuilder.addByte(1);
+    List<int> sellerNameBytes = utf8.encode(biller.name);
+    bytesBuilder.addByte(sellerNameBytes.length);
+    bytesBuilder.add(sellerNameBytes);
+
+    /// 2 Vat No
+    bytesBuilder.addByte(2);
+    List<int> vatNoBytes = utf8.encode(biller.vatNo);
+    bytesBuilder.addByte(vatNoBytes.length);
+    bytesBuilder.add(vatNoBytes);
+
+    /// 3 timestamp
+    bytesBuilder.addByte(3);
+    List<int> timeStampBytes = utf8.encode(inv.date);
+    bytesBuilder.addByte(timeStampBytes.length);
+    bytesBuilder.add(timeStampBytes);
+
+    /// 4 invoice amount
+    bytesBuilder.addByte(4);
+    List<int> invoiceAmountBytes = utf8.encode(grandTotal.toStringAsFixed(2));
+    bytesBuilder.addByte(invoiceAmountBytes.length);
+    bytesBuilder.add(invoiceAmountBytes);
+
+    /// 5 Vat Amount
+    bytesBuilder.addByte(5);
+    List<int> vatAmountBytes = utf8.encode(totalTax.toStringAsFixed(2));
+    bytesBuilder.addByte(vatAmountBytes.length);
+    bytesBuilder.add(vatAmountBytes);
+
+    Uint8List qrCodeAsBytes = bytesBuilder.toBytes();
+    final Base64Encoder base64encoder = Base64Encoder();
+    return base64encoder.convert(qrCodeAsBytes);
+  }
+
+  String get qrCodeImageWithOutMeta {
+    String base = qrcodeImage;
+    return base.replaceAll('data:image/png;base64,', '');
+  }
+
+  getQrCodeWidgetImage() {
+    final byteImage = Base64Decoder().convert(qrcodeImage);
+    return byteImage;
   }
 
   double get balanceAmount {

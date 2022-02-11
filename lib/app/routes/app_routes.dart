@@ -18,6 +18,12 @@ abstract class Routes {
   static const addProduct = _Paths.addProduct;
   static const posPayment = _Paths.posPayment;
   static const editProduct = _Paths.editProduct;
+  static const test = _Paths.test;
+  static const customerPayment = _Paths.customerPayment;
+  static const CUSTOMER_LIST = _Paths.customerList;
+  static const CUSTOMER_VIEW = _Paths.customerView;
+  static const CUSTOMER_ADD = _Paths.customerAdd;
+  static const CUSTOMER_EDIT = _Paths.customerEdit;
 }
 
 abstract class _Paths {
@@ -35,4 +41,10 @@ abstract class _Paths {
   static const addProduct = '/add-product';
   static const posPayment = '/pos-payment';
   static const editProduct = '/edit-product';
+  static const test = '/test';
+  static const customerPayment = '/customer-payment';
+  static const customerList = '/customer-list';
+  static const customerView = '/customer-view';
+  static const customerAdd = '/customer-add';
+  static const customerEdit = '/customer-edit';
 }
