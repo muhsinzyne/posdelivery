@@ -46,6 +46,37 @@ class InvoiceResponse {
   String userDirectory;
   String domain;
   InvoiceResponse();
+
+  double get totalTax {
+    return double.tryParse(inv?.totalTax ?? '0.0');
+  }
+
+  double get totalPaid {
+    return (double.tryParse(inv?.paid ?? '0.0'));
+  }
+
+  double get grandTotal {
+    return (double.tryParse(inv?.grandTotal ?? '0.0'));
+  }
+
+  double get total {
+    return (double.tryParse(inv?.total ?? '0.0'));
+  }
+
+  double get balanceAmount {
+    var invoiceTotal = 0.0;
+    var paidTotal = 0.0;
+    var returnPaid = 0.0;
+    var balanceAmount = 0.0;
+    invoiceTotal = double.tryParse(inv?.grandTotal ?? '0.0');
+    paidTotal = double.tryParse(inv?.paid ?? '0.0');
+    if (returnSale != null) {
+      returnPaid = double.tryParse(returnSale?.paid ?? '0.0');
+    }
+    balanceAmount = ((invoiceTotal - paidTotal) + returnPaid);
+    return balanceAmount;
+  }
+
   InvoiceResponse.fromJson(Map<String, dynamic> json) {
     assets = json['assets'];
     settings = json['Settings'] != null ? Settings.fromJson(json['Settings']) : null;
@@ -72,8 +103,9 @@ class InvoiceResponse {
     } else {
       customer = null;
     }
-    if (json['payments'] != null) {
+    if (json['payments'] != false) {
       payments = <Payments>[];
+      print(json['payments']);
       json['payments'].forEach((v) {
         payments.add(Payments.fromJson(v));
       });

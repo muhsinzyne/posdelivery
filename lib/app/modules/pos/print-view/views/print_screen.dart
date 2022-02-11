@@ -11,8 +11,102 @@ import 'package:posdelivery/app/ui/components/loading/cached_image_network.dart'
 import 'package:posdelivery/app/ui/theme/app_colors.dart';
 import 'package:posdelivery/app/ui/theme/styles.dart';
 import 'package:posdelivery/models/constants.dart';
+import 'package:posdelivery/models/response/static/tax_summary.dart';
+
+import '../../../../../models/response/pos/product_row.dart';
+import '../../../../../models/response/pos/return_rows.dart';
 
 class PrintScreen extends GetView<PrintScreenController> {
+  List<TableRow> _generateTableItemList() {
+    List<TableRow> rowItems = [];
+    rowItems.add(TableRow(
+      children: [
+        Column(
+          children: [
+            Text(
+              'name'.tr,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Text(
+              'qty'.tr,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Text(
+              'tax_excl'.tr,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Text(
+              'tax_amount'.tr,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ],
+    ));
+    List<TaxSummaryList> taxSummaryList = [];
+    for (Rows element in controller.invoiceResponse.value.rows ?? []) {
+      if (element.taxName != Constants.none || element.taxCode != null) {
+        var taxIndex = taxSummaryList.indexWhere((tax) => tax.id == element.taxRateId);
+        if (taxIndex == Constants.unDefinedIndex) {
+          TaxSummaryList newTaxList = TaxSummaryList();
+          newTaxList.id = element.taxRateId;
+          newTaxList.name = element.taxName;
+          newTaxList.qty = double.tryParse(element.quantity);
+          newTaxList.taxEx = double.tryParse(element.netUnitPrice);
+          newTaxList.taxAmt = double.tryParse(element.itemTax);
+          taxSummaryList.add(newTaxList);
+        } else {
+          TaxSummaryList newTaxList = taxSummaryList[taxIndex];
+          newTaxList.qty = newTaxList.qty + double.tryParse(element.quantity);
+          newTaxList.taxEx = newTaxList.taxEx + double.tryParse(element.netUnitPrice);
+          newTaxList.taxAmt = newTaxList.taxAmt + double.tryParse(element.itemTax);
+          taxSummaryList[taxIndex] = newTaxList;
+        }
+      }
+    }
+
+    for (var taxItem in taxSummaryList) {
+      rowItems.add(TableRow(
+        children: [
+          Column(
+            children: [
+              Text(taxItem?.name ?? ''),
+            ],
+          ),
+          Column(
+            children: [
+              Text((taxItem?.qty ?? 0.0).toStringAsFixed(1)),
+            ],
+          ),
+          Column(
+            children: [
+              Text((taxItem?.taxEx ?? 0.0).toStringAsFixed(2)),
+            ],
+          ),
+          Column(
+            children: [
+              Text((taxItem?.taxAmt ?? 0.0).toStringAsFixed(2)),
+            ],
+          ),
+        ],
+      ));
+    }
+
+    return rowItems;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,7 +284,7 @@ class PrintScreen extends GetView<PrintScreenController> {
                               children: [
                                 Obx(() {
                                   return Text(
-                                    'customer'.tr + ': ' + (controller.invoiceResponse.value.customer.name ?? ''),
+                                    'customer'.tr + ': ' + (controller.invoiceResponse.value.customer?.name ?? ''),
                                     textAlign: TextAlign.start,
                                   );
                                 }),
@@ -209,103 +303,87 @@ class PrintScreen extends GetView<PrintScreenController> {
                               taxAmount: 'tax_amt'.tr,
                               subTotal: 'sub_total'.tr,
                             ),
-                            ItemsListTile(
-                              number: '1',
-                              itemName: 'Demo Priduct',
-                              qty: '3',
-                              unitPrice: '20.0',
-                              taxAmount: '3.0',
-                              subTotal: '23',
-                            ),
-                            ItemsListTile(
-                              number: '2',
-                              itemName: 'Demo dfsffhfh',
-                              qty: '3',
-                              unitPrice: '20.0',
-                              taxAmount: '3.0',
-                              subTotal: '23',
-                            ),
-                            ItemsListTile(
-                              number: '2',
-                              itemName: 'Demo dfsffhfh',
-                              qty: '3',
-                              unitPrice: '20.0',
-                              taxAmount: '3.0',
-                              subTotal: '23',
-                            ),
-                            ItemsListTile(
-                              number: '2',
-                              itemName: 'Demo dfsffhfh',
-                              qty: '3',
-                              unitPrice: '20.0',
-                              taxAmount: '3.0',
-                              subTotal: '23',
-                            ),
-                            ItemsListTile(
-                              number: '2',
-                              itemName: 'Demo dfsffhfh',
-                              qty: '3',
-                              unitPrice: '20.0',
-                              taxAmount: '3.0',
-                              subTotal: '23',
-                            ),
-                            ItemsListTile(
-                              number: '2',
-                              itemName: 'Demo dfsffhfh',
-                              qty: '3',
-                              unitPrice: '20.0',
-                              taxAmount: '3.0',
-                              subTotal: '23',
-                            ),
-                            ItemsListTile(
-                              number: '2',
-                              itemName: 'Demo dfsffhfh',
-                              qty: '3',
-                              unitPrice: '20.0',
-                              taxAmount: '3.0',
-                              subTotal: '23',
-                            ),
-                            ItemsListTile(
-                              number: '2',
-                              itemName: 'Demo dfsffhfh',
-                              qty: '3',
-                              unitPrice: '20.0',
-                              taxAmount: '3.0',
-                              subTotal: '23',
-                            ),
-                            ItemsListTile(
-                              number: '2',
-                              itemName: 'Demo dfsffhfh',
-                              qty: '3',
-                              unitPrice: '20.0',
-                              taxAmount: '3.0',
-                              subTotal: '23',
-                            ),
+                            Obx(() {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: ScrollPhysics(),
+                                itemCount: controller.invoiceResponse.value.rows?.length ?? 0,
+                                itemBuilder: (BuildContext context, int i) {
+                                  final Rows saleProduct = controller.invoiceResponse.value.rows[i];
+                                  var serialNo = (i + 1).toString();
+                                  return ItemsListTile(
+                                    number: serialNo,
+                                    itemName: saleProduct.productName,
+                                    qty: double.tryParse(saleProduct.quantity).toStringAsFixed(1),
+                                    unitPrice: double.tryParse(saleProduct.unitPrice).toStringAsFixed(2),
+                                    taxAmount: double.tryParse(saleProduct.itemTax).toStringAsFixed(2),
+                                    subTotal: ((double.tryParse(saleProduct.subtotal)) + (double.tryParse(saleProduct.itemTax)))
+                                        .toStringAsFixed(2),
+                                  );
+                                },
+                              );
+                            }),
                             Divider(),
+                            Text('returned_items'.tr.toUpperCase()),
+                            Divider(),
+                            ItemsListTile(
+                              number: '#',
+                              itemName: 'item_name'.tr,
+                              qty: 'qty'.tr,
+                              unitPrice: 'upc'.tr,
+                              taxAmount: 'tax_amt'.tr,
+                              subTotal: 'sub_total'.tr,
+                            ),
+                            Obx(() {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: ScrollPhysics(),
+                                itemCount: controller.invoiceResponse.value.returnRows?.length ?? 0,
+                                itemBuilder: (BuildContext context, int i) {
+                                  final ReturnRows returnItem = controller.invoiceResponse.value.returnRows[i];
+                                  var serialNo = (i + 1).toString();
+                                  return ItemsListTile(
+                                    number: serialNo,
+                                    itemName: returnItem.productName,
+                                    qty: double.tryParse(returnItem.quantity).toStringAsFixed(1),
+                                    unitPrice: double.tryParse(returnItem.unitPrice).toStringAsFixed(2),
+                                    taxAmount: double.tryParse(returnItem.itemTax).toStringAsFixed(2),
+                                    subTotal:
+                                        ((double.tryParse(returnItem.subtotal)) + (double.tryParse(returnItem.itemTax))).toStringAsFixed(2),
+                                  );
+                                },
+                              );
+                            }),
                             ItemSummaryTile(
                               label: 'total'.tr,
-                              value: '100.5',
+                              value: controller.invoiceResponse.value.total.toStringAsFixed(2),
+                            ),
+                            ItemSummaryTile(
+                              label: 'vat'.tr,
+                              value: controller.invoiceResponse.value.totalTax.toStringAsFixed(2),
                             ),
                             ItemSummaryTile(
                               label: 'grand_total'.tr,
-                              value: '100.5',
+                              value: controller.invoiceResponse.value.grandTotal.toStringAsFixed(2),
                             ),
                             ItemSummaryTile(
                               label: 'paid'.tr,
-                              value: '100.5',
+                              value: controller.invoiceResponse.value.totalPaid.toStringAsFixed(2),
                             ),
-                            ItemSummaryTile(
-                              label: 'balance'.tr,
-                              value: '100.5',
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Paid by: Cash'),
-                                Text('Amount: 100.0'),
-                                Text('Change: 0.0'),
-                              ],
-                            ),
+                            controller.invoiceResponse.value.balanceAmount > 0.0
+                                ? ItemSummaryTile(
+                                    label: 'balance'.tr,
+                                    value: controller.invoiceResponse.value.balanceAmount.toStringAsFixed(2),
+                                  )
+                                : Container(),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Text('paid_by'.tr + ': ' + 'cash'.tr),
+                            //     Text('amount'.tr + ': ' + controller.invoiceResponse.value.payments[0]),
+                            //     Text('Change: 0.0'),
+                            //   ],
+                            // ),
                             SizedBox(
                               height: 20,
                             ),
@@ -319,68 +397,7 @@ class PrintScreen extends GetView<PrintScreenController> {
                             ),
                             Table(
                               border: TableBorder.all(),
-                              children: [
-                                TableRow(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Text(
-                                          'name'.tr,
-                                          style: TextStyle(fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          'qty'.tr,
-                                          style: TextStyle(fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          'tax_excl'.tr,
-                                          style: TextStyle(fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          'tax_amount'.tr,
-                                          style: TextStyle(fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Text('vat @ 15'),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text('4'),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text('7.50'),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text('10.20'),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
+                              children: _generateTableItemList(),
                             ),
                             SizedBox(height: 100),
                           ],

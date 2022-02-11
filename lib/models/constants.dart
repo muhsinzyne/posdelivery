@@ -1,6 +1,7 @@
 import 'package:posdelivery/models/currency_format.dart';
 
 class Constants {
+  static const unDefinedIndex = -1;
   static const isTaxProduct = '1';
   static const nonTaxProduct = '0';
   static const forwardSlash = '/';
