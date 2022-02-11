@@ -234,14 +234,23 @@ class PrintScreen extends GetView<PrintScreenController> {
                             SizedBox(
                               height: 10,
                             ),
-                            AutoSizeText(
-                              'tax_invoice'.tr.toUpperCase(),
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            controller.invoiceResponse.value.inv?.saleStatus == SalesStatus.returned
+                                ? AutoSizeText(
+                                    'return_invoice'.tr.toUpperCase(),
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                : AutoSizeText(
+                                    'tax_invoice'.tr.toUpperCase(),
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                             SizedBox(
                               height: 20,
                             ),

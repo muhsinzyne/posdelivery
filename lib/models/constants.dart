@@ -61,3 +61,8 @@ class CurrencyConst {
   static CurrencyFormat srFormat1 = CurrencyFormat(format: "##,##,##0", symbol: 'SR', decimal: '0#');
   static CurrencyFormat srFormat2 = CurrencyFormat(format: "##,##,##0", symbol: 'SR', decimal: '##');
 }
+
+class SalesStatus {
+  static const returned = 'returned';
+  static const completed = 'completed';
+}
