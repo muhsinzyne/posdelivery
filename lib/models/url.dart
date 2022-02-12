@@ -11,4 +11,7 @@ class NetworkURL {
   static var productSuj = base + 'pos/product_sujession';
   static var addSale = base + 'pos/add_sale';
   static var saleView = base + 'pos/sales_view';
+  static var customerAndPriceGroup = base + 'customers/customer_and_price_group';
+  static var customerAdd = base + 'customers/add';
+  static var customerList = base + 'customers/customer_list';
 }

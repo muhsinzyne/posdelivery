@@ -114,6 +114,22 @@ class DashboardScreen extends GetView<DashboardScreenController> {
                                     ),
                                   ],
                                 ),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CTextButton(
+                                      text: 'customers'.tr,
+                                      color: AppColors.greenIconColor,
+                                      textColor: Colors.white,
+                                      onPress: () {
+                                        controller.actionOnCustomers();
+                                      },
+                                      width: Get.size.width / 2.5,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ],
+                                ),
                                 // Row(
                                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 //   children: [

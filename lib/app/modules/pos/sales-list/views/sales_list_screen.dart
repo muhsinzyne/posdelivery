@@ -198,7 +198,9 @@ class SalesListScreen extends GetView<SalesListScreenController> {
                                               crossAxisAlignment: CrossAxisAlignment.end,
                                               children: [
                                                 IconButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    controller.openFile();
+                                                  },
                                                   icon: Icon(
                                                     FontAwesomeIcons.print,
                                                     color: AppColors.primaryVariant,
@@ -208,85 +210,85 @@ class SalesListScreen extends GetView<SalesListScreenController> {
                                             ),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Container(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: [
-                                                PopupMenuButton(
-                                                  icon: Icon(
-                                                    Icons.more_vert,
-                                                  ),
-                                                  itemBuilder: (context) => [
-                                                    PopupMenuItem(
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            FontAwesomeIcons.print,
-                                                            color: AppColors.primaryVariant,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Text('print_pos_invoice'.tr),
-                                                        ],
-                                                      ),
-                                                      value: 1,
-                                                    ),
-                                                    PopupMenuItem(
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            FontAwesomeIcons.print,
-                                                            color: AppColors.primaryVariant,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Text('print_b2b_invoice'.tr),
-                                                        ],
-                                                      ),
-                                                      value: 1,
-                                                      onTap: () {},
-                                                    ),
-                                                    PopupMenuItem(
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            FontAwesomeIcons.cashRegister,
-                                                            color: AppColors.primaryVariant,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Text('add_payments'.tr),
-                                                        ],
-                                                      ),
-                                                      value: 1,
-                                                      onTap: () {},
-                                                    ),
-                                                    PopupMenuItem(
-                                                      child: Row(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.undo,
-                                                            color: AppColors.primaryVariant,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Text('return_sales'.tr),
-                                                        ],
-                                                      ),
-                                                      value: 1,
-                                                      onTap: () {},
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )
+                                        // Expanded(
+                                        //   child: Container(
+                                        //     child: Column(
+                                        //       crossAxisAlignment: CrossAxisAlignment.end,
+                                        //       children: [
+                                        //         PopupMenuButton(
+                                        //           icon: Icon(
+                                        //             Icons.more_vert,
+                                        //           ),
+                                        //           itemBuilder: (context) => [
+                                        //             PopupMenuItem(
+                                        //               child: Row(
+                                        //                 children: [
+                                        //                   Icon(
+                                        //                     FontAwesomeIcons.print,
+                                        //                     color: AppColors.primaryVariant,
+                                        //                   ),
+                                        //                   SizedBox(
+                                        //                     width: 5,
+                                        //                   ),
+                                        //                   Text('print_pos_invoice'.tr),
+                                        //                 ],
+                                        //               ),
+                                        //               value: 1,
+                                        //             ),
+                                        //             PopupMenuItem(
+                                        //               child: Row(
+                                        //                 children: [
+                                        //                   Icon(
+                                        //                     FontAwesomeIcons.print,
+                                        //                     color: AppColors.primaryVariant,
+                                        //                   ),
+                                        //                   SizedBox(
+                                        //                     width: 5,
+                                        //                   ),
+                                        //                   Text('print_b2b_invoice'.tr),
+                                        //                 ],
+                                        //               ),
+                                        //               value: 1,
+                                        //               onTap: () {},
+                                        //             ),
+                                        //             PopupMenuItem(
+                                        //               child: Row(
+                                        //                 children: [
+                                        //                   Icon(
+                                        //                     FontAwesomeIcons.cashRegister,
+                                        //                     color: AppColors.primaryVariant,
+                                        //                   ),
+                                        //                   SizedBox(
+                                        //                     width: 5,
+                                        //                   ),
+                                        //                   Text('add_payments'.tr),
+                                        //                 ],
+                                        //               ),
+                                        //               value: 1,
+                                        //               onTap: () {},
+                                        //             ),
+                                        //             PopupMenuItem(
+                                        //               child: Row(
+                                        //                 children: [
+                                        //                   Icon(
+                                        //                     Icons.undo,
+                                        //                     color: AppColors.primaryVariant,
+                                        //                   ),
+                                        //                   SizedBox(
+                                        //                     width: 5,
+                                        //                   ),
+                                        //                   Text('return_sales'.tr),
+                                        //                 ],
+                                        //               ),
+                                        //               value: 1,
+                                        //               onTap: () {},
+                                        //             )
+                                        //           ],
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // )
                                       ],
                                     ),
                                   ),

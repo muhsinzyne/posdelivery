@@ -22,7 +22,9 @@ void main() async {
     flavorValues: AppFlavors.devFlavor,
   );
   AppServiceBinding().dependencies();
-  await Future.delayed(Duration(seconds: 1));
+  await Future.delayed(Duration(
+    seconds: 1,
+  ));
   runApp(const MyApp());
 }
 
@@ -40,8 +42,6 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.light().copyWith(
             primary: AppColors.primary,
             secondary: AppColors.secondary,
-            primaryVariant: AppColors.primaryVariant,
-            secondaryVariant: AppColors.secondaryVariant,
           ),
           appBarTheme: AppBarTheme(
             color: AppColors.appBarColor,

@@ -186,6 +186,18 @@ class FindCustomerScreen extends GetView<FindCustomerScreenController> {
                 )
               ],
             ),
+            Row(
+              children: [
+                Container(
+                  child: TextButton(
+                    onPressed: () {
+                      controller.actionOnCustomerAdd();
+                    },
+                    child: Text('add_customer'.tr),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

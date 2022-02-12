@@ -51,9 +51,13 @@ class FindCustomerScreenController extends BaseGetXController implements IFindCu
 
   @override
   void onReady() {
+    _fetchCustomerList();
+    super.onReady();
+  }
+
+  _fetchCustomerList() {
     UINotification.showLoading();
     posDataProvider.getAllCustomerList();
-    super.onReady();
   }
 
   // void onQRViewCreated(QRViewController qrCont) {
@@ -63,6 +67,12 @@ class FindCustomerScreenController extends BaseGetXController implements IFindCu
   //     result = scanData;
   //   });
   // }
+
+  void actionOnCustomerAdd() {
+    Get.toNamed(Routes.customerAdd).then((value) {
+      _fetchCustomerList();
+    });
+  }
 
   void changeCustomer(String value) {
     cCustomer.value = StringHelper.splitFromBracket(value);

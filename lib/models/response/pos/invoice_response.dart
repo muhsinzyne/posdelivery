@@ -112,7 +112,7 @@ class InvoiceResponse {
 
   String get qrCodeImageWithOutMeta {
     String base = qrcodeImage;
-    return base.replaceAll('data:image/png;base64,', '');
+    return base?.replaceAll('data:image/png;base64,', '');
   }
 
   getQrCodeWidgetImage() {

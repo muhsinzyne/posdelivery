@@ -20,10 +20,10 @@ abstract class Routes {
   static const editProduct = _Paths.editProduct;
   static const test = _Paths.test;
   static const customerPayment = _Paths.customerPayment;
-  static const CUSTOMER_LIST = _Paths.customerList;
-  static const CUSTOMER_VIEW = _Paths.customerView;
-  static const CUSTOMER_ADD = _Paths.customerAdd;
-  static const CUSTOMER_EDIT = _Paths.customerEdit;
+  static const customerList = _Paths.customerList;
+  static const customerView = _Paths.customerView;
+  static const customerAdd = _Paths.customerAdd;
+  static const customerEdit = _Paths.customerEdit;
 }
 
 abstract class _Paths {

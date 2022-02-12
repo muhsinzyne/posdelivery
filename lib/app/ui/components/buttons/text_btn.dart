@@ -9,6 +9,7 @@ class CTextButton extends StatelessWidget {
   final double width;
   final BorderRadius borderRadius;
   final double fontSize;
+  final double height;
   const CTextButton({
     Key key,
     this.text = 'app_title',
@@ -16,6 +17,7 @@ class CTextButton extends StatelessWidget {
     this.color = AppColors.primary,
     this.textColor = AppColors.secondary,
     this.width = 300,
+    this.height = 60,
     this.borderRadius,
     this.fontSize = 14,
   }) : super(key: key);

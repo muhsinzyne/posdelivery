@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:posdelivery/app/config/flavor/flavor_service.dart';
 import 'package:posdelivery/app/modules/contracts.dart';
 import 'package:posdelivery/app/routes/app_pages.dart';
@@ -110,5 +115,41 @@ class BaseGetXController extends GetxController implements IBaseGetXController {
     print("\n \n \n ");
     print(appPrefix);
     validateLogin();
+  }
+
+  nextFocus(FocusNode focusNode, context) {
+    FocusScope.of(context).requestFocus(focusNode);
+  }
+
+  void openFile({String url, String fileName}) async {
+    File file = await downloadFile('http://www.africau.edu/images/default/sample.pdf', 'sample.pdf');
+    if (file == null) {
+      return;
+    }
+    print('path: ${file.path}');
+    OpenFile.open(file.path);
+  }
+
+  Future<File> downloadFile(String url, String fileName) async {
+    try {
+      final name = fileName ?? url.split('/').last;
+      String dir = (await getApplicationDocumentsDirectory()).path;
+      print(dir);
+      File file = File('$dir/$name');
+      final response = await Dio().get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          receiveTimeout: 0,
+        ),
+      );
+      final raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(response.data);
+      await raf.close();
+      return file;
+    } catch (e) {
+      return null;
+    }
   }
 }

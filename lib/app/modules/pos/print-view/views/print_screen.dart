@@ -410,8 +410,15 @@ class PrintScreen extends GetView<PrintScreenController> {
                               border: TableBorder.all(),
                               children: _generateTableItemList(),
                             ),
-
-                            Image.memory(base64Decode(controller.invoiceResponse.value.qrCodeImageWithOutMeta)),
+                            controller.isLoading.isFalse
+                                ? Obx(
+                                    () {
+                                      return Image.memory(
+                                        base64Decode(controller.invoiceResponse.value?.qrCodeImageWithOutMeta),
+                                      );
+                                    },
+                                  )
+                                : Container(),
                             SizedBox(height: 100),
                           ],
                         ),
@@ -480,14 +487,6 @@ class PrintScreen extends GetView<PrintScreenController> {
               label: 'print'.tr,
               onTap: () {
                 controller.actionOnPrint();
-              },
-            ),
-            CBottomSheetBtn(
-              color: AppColors.secondary,
-              icon: Icons.share,
-              label: 'share_invoice'.tr,
-              onTap: () {
-                print("hello");
               },
             ),
           ],

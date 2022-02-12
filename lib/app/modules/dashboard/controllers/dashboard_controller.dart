@@ -14,4 +14,7 @@ class DashboardScreenController extends BaseGetXController implements IDashboard
   }
 
   actionGoPayments() {}
+  actionOnCustomers() {
+    Get.toNamed(Routes.customerList);
+  }
 }

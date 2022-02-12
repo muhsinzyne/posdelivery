@@ -45,6 +45,7 @@ class PrintScreenController extends BaseGetXController implements IPrintScreenCo
 
   @override
   onSaleViewFetchDone(InvoiceResponse dataResponse) {
+    isLoading.value = false;
     UINotification.hideLoading();
     invoiceResponse.value = dataResponse;
     print(invoiceResponse.toJson());
@@ -55,7 +56,9 @@ class PrintScreenController extends BaseGetXController implements IPrintScreenCo
     UINotification.showLoading();
     printProvider.loadImage(invoiceResponse.value.logoPath);
     await Future.delayed(Constants.smallDuration);
+
     printProvider.printPosInvoice(invoiceResponse.value);
+
     UINotification.hideLoading();
   }
 }
