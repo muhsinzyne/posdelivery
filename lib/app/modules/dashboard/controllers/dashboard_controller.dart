@@ -41,7 +41,9 @@ class DashboardScreenController extends BaseGetXController implements IDashboard
   }
 
   actionSearchCustomer(BuildContext context) {
-    showSearch(context: context, delegate: FindCustomerSearch());
+    showSearch(context: context, delegate: FindCustomerSearch()).then((value) {
+      _fetchMyData();
+    });
   }
 
   @override
