@@ -31,6 +31,10 @@ class ProductPurchaseInfo {
   Product rowProduct;
   ProductPurchaseInfo();
 
+  double get netUnitProductPrice {
+    return (unitPrice - taxVal);
+  }
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'unique_id': uniqueId,
         'itemId': itemId,

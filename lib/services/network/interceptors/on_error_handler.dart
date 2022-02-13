@@ -47,7 +47,7 @@ class OnErrorHandler extends Interceptor {
             super.onError(err, handler);
             break;
           case StatusCodes.status404NotFound:
-            UINotification.showNotification(title: 'error_404'.tr);
+            //UINotification.showNotification(title: 'error_404'.tr);
             super.onError(err, handler);
             break;
           case StatusCodes.status400BadRequest:

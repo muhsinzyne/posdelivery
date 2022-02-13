@@ -24,6 +24,8 @@ abstract class Routes {
   static const customerView = _Paths.customerView;
   static const customerAdd = _Paths.customerAdd;
   static const customerEdit = _Paths.customerEdit;
+  static const salePayment = _Paths.salePayment;
+  static const openRegister = _Paths.openRegister;
 }
 
 abstract class _Paths {
@@ -47,4 +49,6 @@ abstract class _Paths {
   static const customerView = '/customer-view';
   static const customerAdd = '/customer-add';
   static const customerEdit = '/customer-edit';
+  static const salePayment = '/sale-payment';
+  static const openRegister = '/open-register';
 }

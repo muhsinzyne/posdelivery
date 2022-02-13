@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:posdelivery/app/modules/crud/contracts.dart';
+import 'package:posdelivery/app/routes/app_pages.dart';
 import 'package:posdelivery/app/ui/components/ui_notification.dart';
 import 'package:posdelivery/controllers/base_controller.dart';
+import 'package:posdelivery/models/navigation/sales_list_nav.dart';
 import 'package:posdelivery/models/requests/customer/customer_list_request.dart';
 import 'package:posdelivery/models/response/customer/customer_account_list_response.dart';
 import 'package:posdelivery/models/response/customer/customer_data.dart';
@@ -37,6 +39,13 @@ class CustomerListController extends BaseGetXController implements ICustomerList
     super.onReady();
   }
 
+  actionOnSalesList(CustomerData customerData) {
+    SalesListNavParams salesListNavParams = SalesListNavParams();
+    salesListNavParams.customerId = customerData.id;
+    salesListNavParams.customerName = customerData.company;
+    Get.toNamed(Routes.salesList, arguments: salesListNavParams);
+  }
+
   _loadMore() async {
     if (isLoading.isFalse) {
       customerListRequest.page++;
@@ -48,6 +57,7 @@ class CustomerListController extends BaseGetXController implements ICustomerList
   }
 
   _fetchListData() {
+    UINotification.showLoading();
     posDataProvider.getCustomerListRequest(customerListRequest);
   }
 

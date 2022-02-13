@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:posdelivery/app/ui/components/buttons/create_drawer_body_item_btn.dart';
 import 'package:posdelivery/app/ui/components/loading/cached_image_network.dart';
@@ -55,12 +54,12 @@ class _AppDrawerState extends State<AppDrawer> {
                       color: AppColors.primary,
                     ),
                   ),
-                  DrawerBodyItemButton(
-                    icon: Icon(FontAwesomeIcons.user),
-                    text: 'my_account'.tr,
-                    onTap: appController.actionMyAccount,
-                  ),
-                  DrawerBodyItemButton(icon: Icon(FontAwesomeIcons.user), text: 'app_my_services', onTap: () {}),
+                  // DrawerBodyItemButton(
+                  //   icon: Icon(FontAwesomeIcons.user),
+                  //   text: 'my_account'.tr,
+                  //   onTap: appController.actionMyAccount,
+                  // ),
+                  //DrawerBodyItemButton(icon: Icon(FontAwesomeIcons.user), text: 'app_my_services', onTap: () {}),
                   DrawerBodyItemButton(
                     icon: Icon(Icons.language),
                     text: 'change_language'.tr,

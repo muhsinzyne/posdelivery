@@ -489,6 +489,14 @@ class PrintScreen extends GetView<PrintScreenController> {
                 controller.actionOnPrint();
               },
             ),
+            CBottomSheetBtn(
+              color: AppColors.primary,
+              icon: Icons.share,
+              label: 'share_invoice'.tr,
+              onTap: () {
+                controller.openInvoice(controller.invoiceResponse.value);
+              },
+            ),
           ],
         ),
       ),

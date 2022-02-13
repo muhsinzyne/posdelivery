@@ -105,7 +105,7 @@ class PosPaymentController extends BaseGetXController implements IPosPaymentCont
       }
       saleRequest.productTax.add('1');
       // change to net price
-      saleRequest.netPrice.add(element.unitPrice.toStringAsFixed(2));
+      saleRequest.netPrice.add(element.netUnitProductPrice.toStringAsFixed(2));
       saleRequest.unitPrice.add(element.unitPrice.toStringAsFixed(2));
       saleRequest.realUnitPrice.add(element.unitPrice.toStringAsFixed(2));
       saleRequest.quantity.add(element.itemQty.toString());
@@ -113,8 +113,11 @@ class PosPaymentController extends BaseGetXController implements IPosPaymentCont
       saleRequest.productBaseQuantity.add(element.baseQuantity);
       //print(element.toJson());
     }
-    saleRequest.amount.add(dueAmount.text);
-    saleRequest.balanceAmount.add(balanceAmount.text);
+    saleRequest.amount.add(paymentAmount.text);
+
+    var amountBalance = double.tryParse(changeAmount.text).abs() - (double.tryParse(balanceAmount.text));
+    var amountBalanceString = amountBalance.toStringAsFixed(2);
+    saleRequest.balanceAmount.add(amountBalanceString);
     saleRequest.paidBy.add('cash');
     saleRequest.ccNo.add('');
     saleRequest.payingGiftCardNo.add('');

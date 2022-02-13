@@ -8,6 +8,7 @@ class CElevatedButton extends StatelessWidget {
 
   final Function onPress;
   final Color bgColor;
+  final double fontSize;
 
   const CElevatedButton({
     Key key,
@@ -16,6 +17,7 @@ class CElevatedButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.bgColor,
     this.onPress,
+    this.fontSize = 20,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,7 @@ class CElevatedButton extends StatelessWidget {
         primary: bgColor ?? AppColors.primary,
         padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
         textStyle: TextStyle(
-          fontSize: 20,
+          fontSize: fontSize,
           fontWeight: FontWeight.bold,
         ),
       ),

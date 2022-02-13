@@ -8,14 +8,19 @@ import 'package:path_provider/path_provider.dart';
 import 'package:posdelivery/app/config/flavor/flavor_service.dart';
 import 'package:posdelivery/app/modules/contracts.dart';
 import 'package:posdelivery/app/routes/app_pages.dart';
+import 'package:posdelivery/app/ui/components/ui_notification.dart';
 import 'package:posdelivery/controllers/app_controller.dart';
 import 'package:posdelivery/models/constants.dart';
 import 'package:posdelivery/models/currency_format.dart';
 import 'package:posdelivery/models/response/auth/employee_info.dart';
 import 'package:posdelivery/models/response/auth/my_info_response.dart';
+import 'package:posdelivery/models/response/pos/invoice_response.dart';
+import 'package:posdelivery/models/url.dart';
 import 'package:posdelivery/providers/data/auth_data_provider.dart';
 import 'package:posdelivery/services/app_service.dart';
 import 'package:posdelivery/services/storage/local_storage_service.dart';
+
+import '../models/response/pos/sales_list.dart';
 
 class BaseGetXController extends GetxController implements IBaseGetXController {
   // base dependency injections
@@ -121,18 +126,33 @@ class BaseGetXController extends GetxController implements IBaseGetXController {
     FocusScope.of(context).requestFocus(focusNode);
   }
 
-  void openFile({String url, String fileName}) async {
-    File file = await downloadFile('http://www.africau.edu/images/default/sample.pdf', 'sample.pdf');
+  void openInvoice(InvoiceResponse invoiceResponse) async {
+    UINotification.showLoading();
+    var apiUrl = NetworkURL.api + Constants.invoicePdfPrefix + invoiceResponse.inv.id + Constants.pdf;
+    File file = await downloadFile(apiUrl);
     if (file == null) {
       return;
     }
     print('path: ${file.path}');
     OpenFile.open(file.path);
+    UINotification.hideLoading();
   }
 
-  Future<File> downloadFile(String url, String fileName) async {
+  void openFile(SalesInfoShort salesInfoShort) async {
+    UINotification.showLoading();
+    var apiUrl = NetworkURL.api + Constants.invoicePdfPrefix + salesInfoShort.id + Constants.pdf;
+    File file = await downloadFile(apiUrl);
+    if (file == null) {
+      return;
+    }
+    print('path: ${file.path}');
+    OpenFile.open(file.path);
+    UINotification.hideLoading();
+  }
+
+  Future<File> downloadFile(String url) async {
     try {
-      final name = fileName ?? url.split('/').last;
+      final name = url.split('/').last;
       String dir = (await getApplicationDocumentsDirectory()).path;
       print(dir);
       File file = File('$dir/$name');

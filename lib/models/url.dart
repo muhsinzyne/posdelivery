@@ -14,4 +14,9 @@ class NetworkURL {
   static var customerAndPriceGroup = base + 'customers/customer_and_price_group';
   static var customerAdd = base + 'customers/add';
   static var customerList = base + 'customers/customer_list';
+  static var addSalePayment = base + 'pos/add_sale_payment';
+  static var myRegisterSummary = base + 'pos/current_register';
+  static var openRegister = base + 'pos/open_register';
+  static var registerCloseSummary = base + 'pos/register_close_summary';
+  static var customerSearch = base + 'customers/customer_sujession';
 }

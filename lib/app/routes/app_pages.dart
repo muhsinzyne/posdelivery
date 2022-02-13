@@ -1,25 +1,29 @@
 import 'package:get/get.dart';
-import 'package:posdelivery/app/modules/crud/customer/customer-edit/bindings/customer_edit_binding.dart';
-import 'package:posdelivery/app/modules/crud/customer/customer-edit/views/customer_edit_view.dart';
-import 'package:posdelivery/app/modules/crud/customer/customer-list/bindings/customer_list_binding.dart';
-import 'package:posdelivery/app/modules/crud/customer/customer-list/views/customer_list_view.dart';
-import 'package:posdelivery/app/modules/crud/customer/customer-view/bindings/customer_view_binding.dart';
-import 'package:posdelivery/app/modules/crud/customer/customer-view/views/customer_view_view.dart';
 
 import '../modules/auth/licence/bindings/licence_screen_binding.dart';
 import '../modules/auth/licence/views/licence_screen.dart';
 import '../modules/auth/login/bindings/login_screen_binding.dart';
 import '../modules/auth/login/views/login_screen.dart';
+import '../modules/auth/open-register/bindings/open_register_binding.dart';
+import '../modules/auth/open-register/views/open_register_view.dart';
 import '../modules/auth/otp_verification/bindings/otp_verification_binding.dart';
 import '../modules/auth/otp_verification/views/otp_verification_view.dart';
 import '../modules/crud/customer/customer-add/bindings/customer_add_binding.dart';
 import '../modules/crud/customer/customer-add/views/customer_add_view.dart';
+import '../modules/crud/customer/customer-edit/bindings/customer_edit_binding.dart';
+import '../modules/crud/customer/customer-edit/views/customer_edit_view.dart';
+import '../modules/crud/customer/customer-list/bindings/customer_list_binding.dart';
+import '../modules/crud/customer/customer-list/views/customer_list_view.dart';
+import '../modules/crud/customer/customer-view/bindings/customer_view_binding.dart';
+import '../modules/crud/customer/customer-view/views/customer_view_view.dart';
 import '../modules/dashboard/bindings/dashboard_screen_binding.dart';
 import '../modules/dashboard/views/dashboard_screen.dart';
 import '../modules/my-account/bindings/my_account_binding.dart';
 import '../modules/my-account/views/my_account_view.dart';
 import '../modules/payment/customer-payment/bindings/customer_payment_binding.dart';
 import '../modules/payment/customer-payment/views/customer_payment_view.dart';
+import '../modules/payment/sale-payment/bindings/sale_payment_binding.dart';
+import '../modules/payment/sale-payment/views/sale_payment_view.dart';
 import '../modules/pos/add-product/bindings/add_product_binding.dart';
 import '../modules/pos/add-product/views/add_product_view.dart';
 import '../modules/pos/edit-product/bindings/edit_product_binding.dart';
@@ -148,6 +152,16 @@ class AppPages {
       name: _Paths.customerEdit,
       page: () => CustomerEditView(),
       binding: CustomerEditBinding(),
+    ),
+    GetPage(
+      name: _Paths.salePayment,
+      page: () => SalePaymentView(),
+      binding: SalePaymentBinding(),
+    ),
+    GetPage(
+      name: _Paths.openRegister,
+      page: () => OpenRegisterView(),
+      binding: OpenRegisterBinding(),
     ),
   ];
 }

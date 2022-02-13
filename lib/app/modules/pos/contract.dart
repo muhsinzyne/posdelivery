@@ -23,6 +23,9 @@ abstract class IEditProductController {}
 abstract class IProductSuggestionController {
   onSuggestionDone(ProductSuggestionResponse pResponse);
   onSuggestionError(ErrorMessage err);
+
+  onCustomerSuggestionDone(CustomerListResponse customerListResponse);
+  onCustomerSuggestionError(ErrorMessage err);
 }
 
 abstract class IPosPaymentController {

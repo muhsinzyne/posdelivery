@@ -11,6 +11,21 @@ class CustomerData {
 
   CustomerData({id, company, name, email, phone, customerGroupName, vatNo, account, awardPoints});
 
+  double get dueAccount {
+    if (account != null) {
+      return double.tryParse(account);
+    }
+    return 0.0;
+  }
+
+  bool get isDue {
+    return dueAccount < 0 ? true : false;
+  }
+
+  bool get isOverPaid {
+    return dueAccount > 0 ? true : false;
+  }
+
   CustomerData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     company = json['company'];

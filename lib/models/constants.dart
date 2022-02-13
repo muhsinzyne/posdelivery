@@ -53,7 +53,10 @@ class Constants {
   static const stringExpressionStop = ']';
   static const uploadsPath = '/assets/uploads/';
   static const logosPath = '/logos/';
-
+  static const invoicePdfPrefix = '/admin/sales/api_pdf/';
+  static const pdf = '.pdf';
+  static const paidByCash = 'cash';
+  static const paidByDeposit = 'deposit';
   static const Duration smallDuration = Duration(milliseconds: 300);
   static const Duration oneSecDuration = Duration(seconds: 1);
   static const Duration fourSec = Duration(seconds: 4);

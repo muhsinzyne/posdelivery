@@ -15,4 +15,5 @@ class AppColors {
   static const Color blackOpa = Color(0xdc000000);
   static const Color purple = Color(0xff603ff5);
   static const Color lightBg = Color(0xffd0d0d0);
+  static const Color red = Color(0xffd40404);
 }

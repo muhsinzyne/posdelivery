@@ -199,10 +199,32 @@ class SalesListScreen extends GetView<SalesListScreenController> {
                                               children: [
                                                 IconButton(
                                                   onPressed: () {
-                                                    controller.openFile();
+                                                    controller.openFile(cSales);
                                                   },
                                                   icon: Icon(
                                                     FontAwesomeIcons.print,
+                                                    color: AppColors.primaryVariant,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                // TextButton(
+                                                //   onPressed: () {},
+                                                //   child: Text('add_payment'.tr),
+                                                // ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    controller.actionOnAddPayment(cSales);
+                                                  },
+                                                  icon: Icon(
+                                                    FontAwesomeIcons.dollarSign,
                                                     color: AppColors.primaryVariant,
                                                   ),
                                                 ),
